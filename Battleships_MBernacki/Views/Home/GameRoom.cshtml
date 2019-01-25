@@ -1,0 +1,52 @@
+﻿@model Battleships_MBernacki.Models.GameRoom
+
+@{
+    ViewData["Title"] = "GameRoom";
+}
+
+<h2>GameRoom</h2>
+
+<h4>GameRoom</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GameRoom">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoomID" class="control-label"></label>
+                <input asp-for="RoomID" class="form-control" />
+                <span asp-validation-for="RoomID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomName" class="control-label"></label>
+                <input asp-for="RoomName" class="form-control" />
+                <span asp-validation-for="RoomName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="RequirePassword" /> @Html.DisplayNameFor(model => model.RequirePassword)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentPlayerTurn" class="control-label"></label>
+                <input asp-for="CurrentPlayerTurn" class="form-control" />
+                <span asp-validation-for="CurrentPlayerTurn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
