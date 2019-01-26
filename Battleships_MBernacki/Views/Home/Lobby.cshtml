@@ -1,47 +1,45 @@
 ﻿@*@model _Views_Home_Lobby*@
-@model Battleships_MBernacki.Views.Home.Lobby
+@*@model Battleships_MBernacki.Views.Home.Lobby*@
 
 @{
     ViewData["Title"] = "Lobby";
 }
 
+<div id="RoomCreatePopUp" class="popUp" style="display:none;">
+
+    <label class="inputName">Room name</label>
+    <input type="text" id="roomNameInput" />
+    <label id="roomNameErrorLabel" class="errorLabel">Label mutherfucker</label>
+
+    <label class="inputName">Password (optional)</label>
+    <input type="text" id="roomPasswordInput" />
+
+    <button onclick="submitCreateRoom()">Create</button>
+    <button onclick="togglePopUp('#RoomCreatePopUp')">Cancel</button>
+</div>
+
 <script>
-    onLobbyLoad();
+    checkIfNicknameSet();
+    $(document).ready(function () {
+        updateRoomList("#result");
+    });
 </script>
 
 
-<div class="lobby flexContainer">
-    <button>Create New Room</button>
-    @*<p>@Model.MyProperty</p>*@
+<div id="lobby" class="flexContainer">
+    <div id="lobbyHeader">
+        <button onclick="togglePopUp('#RoomCreatePopUp')">Create New Room</button>
+        <button onclick="updateRoomList('#result')">Refresh</button>
 
 
-
-    <script>
-
-        $(document).ready(function () {
-
-            var options = {};
-            options.url = "/api/room";
-            options.type = "GET";
-            options.dataType = "json";
-            options.success = function (data) {
-
-                data.forEach(function (element) {
-                    console.log(element);
-                    $("#result").append("<h3>" + element.roomName + " | "  + element.ownerName + "</h3>");
-                });
-            };
-            options.error = function () {
-                $("#msg").html("Error while calling the Web API!");
-            };
-            $.ajax(options);
-        });
+    </div>
+    <div id="lobbyBody">
 
 
-    </script>
 
     <div id="result"></div>
     <div id="msg"></div>
+    </div>
 
 </div>
 

@@ -12,53 +12,69 @@ namespace Battleships_MBernacki.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private List<GameRoom> RoomList { get; set; } = new List<GameRoom>();
+        private IGameRooms<GameRoom> _gameRooms { get; set; }
 
-        //[HttpGet]
-        //[Produces("application/json")]
-        //public IActionResult CreateRoom([FromBody] RoomCreation roomCreation)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        public RoomController(IGameRooms<GameRoom> gameRooms)
+        {
+            _gameRooms = gameRooms;
+        }
 
-        //    string password;
-        //    if (roomCreation == null) password = "";
-        //    else password = roomCreation.Password;
+        //private List<GameRoom> RoomList { get; set; } = new List<GameRoom>();
 
-        //    GameRoom newGameRoom = new GameRoom(RoomList.Count(), roomCreation.RoomName, password);
-        //    RoomList.Add(newGameRoom);
-        //    int playerRoomKey = newGameRoom.AddPlayer(roomCreation.PlayerName);
 
-        //    return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, OponentName = "", RoomName = newGameRoom.RoomName });
-        //}
 
-        //[HttpGet]
-        //[Produces("application/json")]
-        //public IActionResult JoinRoom([FromBody] RoomJoin roomJoin)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpPost]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public IActionResult CreateRoom([FromBody] RoomCreation roomCreation)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        //    GameRoom gameRoom = RoomList.Find(r => r.RoomID == roomJoin.RoomId);
+            string password;
+            if (roomCreation.Password == null) password = "";
+            else password = roomCreation.Password;
 
-        //    if (gameRoom == null) return NotFound("Game room could not be found");
-        //    if (!gameRoom.Instantiating) return NotFound("Game room is full");
-        //    if (gameRoom.Password != "" && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
+            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password);
+            int playerRoomKey = newGameRoom.AddPlayer(roomCreation.PlayerName);
 
-        //    int playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);
+            //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
+            //var newGameRoom = RoomList.Last<GameRoom>();
+            _gameRooms.GameRoomsList.Add(newGameRoom);
 
-        //    return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, OponentName = "", RoomName = gameRoom.RoomName });
-        //}
+
+            return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, RoomID = newGameRoom.RoomID , OponentName = "", RoomName = newGameRoom.RoomName });
+        }
 
         [HttpGet]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public IActionResult JoinRoom([FromBody] RoomJoin roomJoin)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var gameRoom = _gameRooms.GameRoomsList.Find(r => r.RoomID == roomJoin.RoomId);
+
+            if (gameRoom == null) return NotFound("Game room could not be found");
+            if (!gameRoom.Instantiating) return NotFound("Game room is full");
+            if (gameRoom.Password != "" && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
+
+            int playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);//Trajkaczem obłożyć
+
+            return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, RoomID = gameRoom.RoomID, OponentName = "", RoomName = gameRoom.RoomName });
+        }
+
+        [HttpGet]
+        [Route("[action]")]
         [Produces("application/json")]
         public IActionResult GetRoomList()
         {
-            GameRoom newGameRoom = new GameRoom(123, "Halko", "");
-            newGameRoom.AddPlayer("Kazik");
-            RoomList.Add(newGameRoom);
+            //GameRoom newGameRoom = new GameRoom(123, "Halko", "");
+            //newGameRoom.AddPlayer("Kazik");
+            //RoomList.Add(newGameRoom);
 
 
             List<RoomInfo> avalibleRooms = new List<RoomInfo>();
-            RoomList.ForEach(room =>
+            _gameRooms.GameRoomsList.ForEach(room =>
             {
                 if (room.Instantiating)
                     avalibleRooms.Add(new RoomInfo()
@@ -69,7 +85,7 @@ namespace Battleships_MBernacki.Controllers
                     });
             });
 
-            return Ok(avalibleRooms.ToArray());
+            return Ok(avalibleRooms);
         }
 
 

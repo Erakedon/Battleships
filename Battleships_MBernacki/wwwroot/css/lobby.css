@@ -1,4 +1,60 @@
-﻿.lobby
+﻿#lobby #lobbyHeader
 {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
 
+    align-self: flex-start;
+
+    width: 100%;
+    padding: 5px;
+    
+}
+
+#lobbyHeader *
+{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#lobby #lobbyBody
+{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    height: 80vh;
+    width: 90vw;
+}
+
+#lobby .roomInfo {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 90vw;
+    height: 80px;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#lobby .roomInfo:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#lobby .roomName 
+{
+    font-size: 2em;
+}
+
+#lobby .playerName 
+{
+    font-size: 1.4em;
+    color: #aaa;
 }

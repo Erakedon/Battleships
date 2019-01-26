@@ -26,7 +26,7 @@ namespace Battleships_MBernacki.Models
             RoomName = roomName;
             //RoomPlayersKeys = new List<int>(2);
             Password = password;
-            if (password != "") RequirePassword = false;
+            if (password == "") RequirePassword = false;
             else RequirePassword = true;
 
             CurrentPlayerTurn = 1;
