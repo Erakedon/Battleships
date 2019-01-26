@@ -26,4 +26,8 @@ function submitNickname() {
 function onLobbyLoad() {
     console.log('Lobby loaded');
 
+    let userNickname = JSON.parse(localStorage.getItem('userNickname'));
+
+
+    if (!userNickname) window.location.href = ('/home/index/');
 }

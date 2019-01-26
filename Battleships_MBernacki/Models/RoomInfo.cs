@@ -8,7 +8,7 @@ namespace Battleships_MBernacki.Models
     public class RoomInfo
     {
         public string RoomName { get; set; }
-        public string[] PlayersNames { get; set; }
+        public string OwnerName { get; set; }
         public bool RequirePassword { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace Battleships_MBernacki.Models
     {
         public int RoomID { get; set; }
         public string RoomName { get; set; }
-        private List<int> RoomPlayersKeys { get; }
-        public List<string> PlayersNames { get; }
-        public List<ShipsMap> Maps { get; set; }
+        private List<int> RoomPlayersKeys { get; set; } = new List<int>();
+        public List<string> PlayersNames { get; set; } = new List<string>();
+        public List<ShipsMap> Maps { get; set; } = new List<ShipsMap>();
         public string Password { get; set; }
         public bool RequirePassword { get; }
         public short CurrentPlayerTurn { get; }// 0-first player turn | 1-second player turn
@@ -24,9 +24,12 @@ namespace Battleships_MBernacki.Models
         {
             RoomID = roomID;
             RoomName = roomName;
+            //RoomPlayersKeys = new List<int>(2);
             Password = password;
             if (password != "") RequirePassword = false;
             else RequirePassword = true;
+
+            CurrentPlayerTurn = 1;
         }
 
         public int AddPlayer(string name)
