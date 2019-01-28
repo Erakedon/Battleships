@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Battleships_MBernacki.Models
 {
-    public class MapSend
+    public class PlayerShootInfo
     {
-        [Required]
-        public short[][] Map { get; set; }// 0 - blank | 1 - ship | -1 - ship drowned
         [Required]
         public int RoomID { get; set; }
         [Required]
         public int PlayerKey { get; set; }
+        [Required]
+        public int X { get; set; }
+        [Required]
+        public int Y { get; set; }
     }
 }

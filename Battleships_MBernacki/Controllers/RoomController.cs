@@ -34,7 +34,8 @@ namespace Battleships_MBernacki.Controllers
             if (roomCreation.Password == null) password = "";
             else password = roomCreation.Password;
 
-            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password);
+            short[] shipList = new short[] { 0, 2, 1, 1 };//Index + 1 is the indicator of ship size
+            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password,6,shipList);
             int playerRoomKey = newGameRoom.AddPlayer(roomCreation.PlayerName);
 
             //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
@@ -98,11 +99,67 @@ namespace Battleships_MBernacki.Controllers
             var playerRoomId = gameRoom.GetPlayerRoomId(mapInfo.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
 
-            gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
+            //var shipsMap = new ShipsMap(mapInfo.Map,gameRoom.MapSize,gameRoom.ShipList);
+            bool isMapOk = gameRoom.AddMap(mapInfo.PlayerKey, mapInfo.Map, gameRoom.MapSize, gameRoom.ShipList);
+            if(!isMapOk) return BadRequest("Map is not correct");
+
+
+            //gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
 
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public IActionResult Gamestate([FromBody] GamestateQuery query)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var gameRoom = _gameRooms.GameRoomsList.Find(r => r.RoomID == query.RoomID);
+
+            if (gameRoom == null) return BadRequest("Wrong Room Id");
+
+            var playerRoomId = gameRoom.GetPlayerRoomId(query.PlayerKey);
+            if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
+                       
+
+            return Ok(new RoomstateInfo() {
+                RoomID = gameRoom.RoomID,
+                AskingPlayerTurn = gameRoom.IsPlayerTurn(query.PlayerKey),
+                LastAction = gameRoom.LastAction,
+                GameOn = gameRoom.GameOn
+            });
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public IActionResult Shoot([FromBody] PlayerShootInfo shootInfo)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var gameRoom = _gameRooms.GameRoomsList.Find(r => r.RoomID == shootInfo.RoomID);
+
+            if (gameRoom == null) return BadRequest("Wrong Room Id");
+
+            var playerRoomId = gameRoom.GetPlayerRoomId(shootInfo.PlayerKey);
+            if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
+
+            string result = gameRoom.PlayerShootReq(shootInfo.PlayerKey, shootInfo.X, shootInfo.Y);
+
+            return Ok(new RoomstateInfo()
+            {
+                RoomID = gameRoom.RoomID,
+                AskingPlayerTurn = gameRoom.IsPlayerTurn(shootInfo.PlayerKey),
+                LastAction = gameRoom.LastAction,
+                GameOn = gameRoom.GameOn
+            });
+        }
+
+
+
 
     }
 }

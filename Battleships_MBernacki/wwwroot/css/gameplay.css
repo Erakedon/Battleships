@@ -17,16 +17,23 @@
     background-color: rgba(37, 42, 255, 0.4);
 }
 
+    .map.clickable .cell {
+        cursor: pointer
+    }
+
     .map .cell.ship {
         background-color: rgba(255, 0, 0, 0.6);
+        cursor: not-allowed;
     }
 
     .map .cell.miss {
         background-color: rgba(0, 0, 0, 0.4);
+        cursor: not-allowed;
     }
 
     .map .cell.complete {
         background-color: rgba(255, 0, 0, 0.2);
+        cursor: not-allowed;
     }
 
 #gameRoom #gameRoomBody {

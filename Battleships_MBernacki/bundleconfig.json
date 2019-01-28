@@ -11,6 +11,8 @@
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
         "wwwroot/js/map.js",
+        "wwwroot/js/playerMap.js",
+        "wwwroot/js/oponentMap.js",
         "wwwroot/js/site.js",
         "wwwroot/js/eventListeners.js",
         "wwwroot/js/gameplay.js"

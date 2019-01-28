@@ -1,5 +1,5 @@
 ﻿let mapSize = 6;
-let shipsList = [0, 3, 2, 1];//Index + 1 is the indicator of ship size
+let shipsList = [0, 2, 1, 1];//Index + 1 is the indicator of ship size
 
 let oponentCells = new Array(mapSize);
 let playerCells = new Array(mapSize);
@@ -7,7 +7,7 @@ let playerCells = new Array(mapSize);
 let playerMap;
 
 function initializeGameplay() {
-    playerMap = new ShipsMap("#playerMap", mapSize, shipsList);
+    playerMap = new PlayerMap("#playerMap", mapSize, shipsList);
 
 }
 

@@ -14,7 +14,6 @@
 
         this.mapSize = _mapSize;
         this.shipsLeft = shipsList.slice();
-        this.shipsLeft = this.shipsLeft;
         
         this.searchedCells = new Array(this.mapSize)
 
@@ -86,9 +85,9 @@
                     let syNeg = this.findInDirection(i, j - 1, 0, -1);
                     let syPos = this.findInDirection(i, j + 1, 0, 1);
 
-                    if (sxNeg + sxPos + syNeg + syPos > 0) {
-                        console.log(sxNeg, sxPos, syNeg,syPos)
-                    }
+                    //if (sxNeg + sxPos + syNeg + syPos > 0) {
+                    //    console.log(sxNeg, sxPos, syNeg,syPos)
+                    //}
 
                     if (sxNeg + sxPos == biggestShip - 1) {
                         this.shipsLeft[biggestShip - 1] -= 1;
@@ -181,11 +180,14 @@
                     case -2:
                         this.mapDOMRef[i][j].classList.remove("ship");
                         this.mapDOMRef[i][j].classList.add("complete");
+                        this.mapDOMRef[i][j].onclick = () => { return false };
                         break;
                     case -1:
+                        this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("miss");
                         break;
                     case 1:
+                        this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("ship");
                         break;
                 }
@@ -193,12 +195,12 @@
         }
     }
 
-    setShip(x, y) {
-        console.log(x, y);
-        this.mapTokens[x][y] = 1;
+    //setShip(x, y) {
+    //    console.log(x, y);
+    //    this.mapTokens[x][y] = 1;
 
-        this.findBlank();
-        this.updateDOMMap();
-    }
+    //    this.findBlank();
+    //    this.updateDOMMap();
+    //}
 
 }
