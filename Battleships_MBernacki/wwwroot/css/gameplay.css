@@ -17,6 +17,18 @@
     background-color: rgba(37, 42, 255, 0.4);
 }
 
+    .map .cell.ship {
+        background-color: rgba(255, 0, 0, 0.6);
+    }
+
+    .map .cell.miss {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .map .cell.complete {
+        background-color: rgba(255, 0, 0, 0.2);
+    }
+
 #gameRoom #gameRoomBody {
     display: flex;
     flex-flow: row nowrap;

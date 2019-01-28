@@ -1,19 +1,22 @@
 ﻿class ShipsMap {
 
-    mapDOMRef;
-    mapTokens;
-    mapSize;
+    //mapDOMRef;
+    //mapTokens;
+    //mapSize;
 
-    shipsLeft;
+    //shipsLeft;
 
 
     constructor(containerId, _mapSize, shipsList) {
         this.mapDOMRef = new Array(mapSize);
         this.generateMap(containerId);
-        console.log(mapDOMRef);
+        console.log(this.mapDOMRef);
 
         this.mapSize = _mapSize;
         this.shipsLeft = shipsList.slice();
+        this.shipsLeft = this.shipsLeft;
+        
+        this.searchedCells = new Array(this.mapSize)
 
         this.mapTokens = new Array(_mapSize);
         for (var i = 0; i < _mapSize; i++) {
@@ -31,18 +34,19 @@
         //if (allegiance == "oponent") arrayReference = oponentCells;
         //else arrayReference = playerCells;
 
-        for (var i = 0; i < mapSize; i++) {
+        for (let i = 0; i < mapSize; i++) {
 
             let row = document.createElement("div");
             row.classList.add('mapRow');
 
-            mapDOMRef[i] = new Array(mapSize);
+            this.mapDOMRef[i] = new Array(mapSize);
 
-            for (var j = 0; j < mapSize; j++) {
+            for (let j = 0; j < mapSize; j++) {
                 let cell = document.createElement("div");
                 cell.classList.add('cell');
+                cell.onclick = () => { this.setShip(i,j) }
 
-                mapDOMRef[i][j] = cell;
+                this.mapDOMRef[i][j] = cell;
 
                 row.appendChild(cell);
             }
@@ -53,87 +57,60 @@
 
     findBlank() {
 
-        let searchedCells = new Array(this.mapSize)
+        this.searchedCells = new Array(this.mapSize)
         for (var i = 0; i < this.mapSize; i++) {
-            searchedCells[i] = new Array(this.mapSize);
+            this.searchedCells[i] = new Array(this.mapSize);
             for (var j = 0; j < this.mapSize; j++) {
-                searchedCells[i][j] = 0;
+                this.searchedCells[i][j] = 0;
             }
         }
 
         let biggestShip = 0;
         this.shipsLeft.forEach((el, index) => {
-            if (el != 0) biggestShip = index + 1;
+            if (el > 0) biggestShip = index + 1;
         });
-
-        function markSlants(x, y) {
-            if (x > 0) {
-                if (y > 0) {
-                    searchedCells[x - 1][y - 1] = 1;
-                    this.mapTokens[x - 1][y - 1] == -1;
-                }
-                if (y < this.mapSize) {
-                    searchedCells[x - 1][y + 1] = 1;
-                    this.mapTokens[x - 1][y + 1] == -1;
-                }
-            }
-            if (x < this.mapSize) {
-                if (y > 0) {
-                    searchedCells[x - 1][y - 1] = 1;
-                    this.mapTokens[x - 1][y - 1] == -1;
-                }
-                if (y < this.mapSize) {
-                    searchedCells[x - 1][y + 1] = 1;
-                    this.mapTokens[x - 1][y + 1] == -1;
-                }
-            }
-        }
+        console.log("biggestShip", biggestShip);
         
-        function findInDirection(x, y, dirX, dirY) {
-            if (x < 0 || x > this.mapSize || y < 0 || y > this.mapSize) return 0;
-
-            if (this.mapTokens[x][y] < 0 || searchedCells[i][j] == 1) {
-                searchedCells[i][j] = 1;
-                return 0;
-            }
-            if (this.mapTokens[x][y] == 1) {
-                searchedCells[i][j] = 1;
-                markSlants(x, y);
-
-
-                return 1 + findInDirection(x + dirX, y + dirY, dirX, dirY);
-            }
-        }
 
         let startOver = false;
         for (var i = 0; i < this.mapSize; i++) {
             for (var j = 0; j < this.mapSize; j++) {
-                if (this.mapTokens[i][j] < 0 || searchedCells[i][j] == 1) continue;
+                if (this.mapTokens[i][j] < 0 || this.searchedCells[i][j] == 1) continue;
                 if (this.mapTokens[i][j] == 1) {
 
-                    markSlants(i, j);
+                    this.markSlants(i, j);
 
-                    let sxNeg = findInDirection(i - 1, j, -1, 0);
-                    let sxPos = findInDirection(i + 1, j, 1, 0);
+                    let sxNeg = this.findInDirection(i - 1, j, -1, 0);
+                    let sxPos = this.findInDirection(i + 1, j, 1, 0);
 
-                    let syNeg = findInDirection(i, j - 1, 0, -1);
-                    let syPos = findInDirection(i, j + 1, 0, 1);
+                    let syNeg = this.findInDirection(i, j - 1, 0, -1);
+                    let syPos = this.findInDirection(i, j + 1, 0, 1);
 
-                    if (sxNeg + sxPos == biggestShip) {
+                    if (sxNeg + sxPos + syNeg + syPos > 0) {
+                        console.log(sxNeg, sxPos, syNeg,syPos)
+                    }
+
+                    if (sxNeg + sxPos == biggestShip - 1) {
+                        this.shipsLeft[biggestShip - 1] -= 1;
                         let x = i + sxPos;
+                        if (i + 1 < this.mapSize) this.mapTokens[x + 1][j] = -1;
                         while (x >= i - sxNeg) {
                             this.mapTokens[x][j] = -2;
                             x--;
                         }
+                        if (x + 1 > 0) this.mapTokens[x][j] = -1;
                         startOver = true;
                         break;
                     }
-                    else if (syNeg + syPos == biggestShip) {
-                        let y = i + syPos;
-                        while (y >= i - syNeg) {
+                    else if (syNeg + syPos == biggestShip - 1) {
+                        this.shipsLeft[biggestShip - 1] -= 1;
+                        let y = j + syPos;
+                        if (y + 1 < this.mapSize) this.mapTokens[i][y + 1] = -1;
+                        while (y >= j - syNeg) {
                             this.mapTokens[i][y] = -2;
                             y--;
                         }
+                        if (y + 1 > 0) this.mapTokens[i][y] = -1;
                         startOver = true;
                         break;
                     }
@@ -145,6 +122,50 @@
         }
         if (startOver) this.findBlank();
     }
+
+    markSlants(x, y) {
+    //console.log(this);
+    //console.log(this.this);
+    if (x > 0) {
+        if (y > 0) {
+            this.searchedCells[x - 1][y - 1] = 1;
+            this.mapTokens[x - 1][y - 1] = -1;
+        }
+        if (y + 1 < this.mapSize) {
+            this.searchedCells[x - 1][y + 1] = 1;
+            this.mapTokens[x - 1][y + 1] = -1;
+        }
+    }
+    if (x + 1 < this.mapSize) {
+        if (y > 0) {
+            this.searchedCells[x + 1][y - 1] = 1;
+            this.mapTokens[x + 1][y - 1] = -1;
+        }
+        if (y + 1 < this.mapSize) {
+            this.searchedCells[x + 1][y + 1] = 1;
+            this.mapTokens[x + 1][y + 1] = -1;
+        }
+    }
+}
+
+    findInDirection(x, y, dirX, dirY) {
+    if (x < 0 || x + 1 > this.mapSize || y < 0 || y + 1 > this.mapSize) return 0;
+
+        //if (this.mapTokens[x][y] < 0 || this.searchedCells[x][y] == 1) {
+        //if (this.mapTokens[x][y] < 0) {
+        //    this.searchedCells[x][y] = 1;
+        //return 0;
+        //}
+    if (this.mapTokens[x][y] == 1) {
+        this.searchedCells[x][y] = 1;
+        this.markSlants(x, y);
+
+
+        return 1 + this.findInDirection(x + dirX, y + dirY, dirX, dirY);
+    }
+        this.searchedCells[x][y] = 1;
+        return 0;
+}
 
 
     updateDOMMap() {
@@ -158,21 +179,22 @@
             for (var j = 0; j < this.mapSize; j++) {
                 switch (this.mapTokens[i][j]) {
                     case -2:
-                        this.mapDOMRef.classList.remove("ship");
-                        this.mapDOMRef.classList.add("complete");
+                        this.mapDOMRef[i][j].classList.remove("ship");
+                        this.mapDOMRef[i][j].classList.add("complete");
                         break;
                     case -1:
-                        this.mapDOMRef.classList.add("miss");
+                        this.mapDOMRef[i][j].classList.add("miss");
                         break;
                     case 1:
-                        this.mapDOMRef.classList.add("ship");
+                        this.mapDOMRef[i][j].classList.add("ship");
                         break;
                 }
             }
         }
     }
 
-    setShip(x,y) {
+    setShip(x, y) {
+        console.log(x, y);
         this.mapTokens[x][y] = 1;
 
         this.findBlank();
