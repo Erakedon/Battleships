@@ -35,7 +35,7 @@ function submitCreateRoom() {
     else {
         let password = passwordInput.value || "";
         createNewRoom(nameInput.value, password);
-        //window.location.href = ('/home/gameroom/');
+        //window.location.href = ('/home/gameroom/' + data.roomID);
     }
     
 }
@@ -43,7 +43,7 @@ function submitCreateRoom() {
 function togglePopUp(popUpId) {
     let popUpEl = document.querySelector(popUpId);
 
-    if (popUpEl.style.display == "none") popUpEl.style.display = "block";
+    if (popUpEl.style.display == "none") popUpEl.style.display = "flex";
     else popUpEl.style.display = "none"
 }
 
@@ -64,22 +64,56 @@ function createNewRoom(roomname, roomPassword) {
         playername: userNickname,
         password: roomPassword
     }
-
+    
     var options = {};
     options.url = "/api/room/CreateRoom";
     options.type = "POST";
     options.contentType = "application/json";
     options.data = JSON.stringify(roomCreationData);
     options.dataType = "json";
-    options.success = function (data) {
-        console.log("Room succesfully created!",data);
+    options.success = (data) => {
+        console.log("Room succesfully created!", data);
+        enterRoom(data);
     };
-    options.error = function () {
+    options.error = () => {
         console.log("Server error");
     };
-    $.ajax(options);
+    $.ajax(options);    
+}
 
-    updateRoomList('#result');//Do kasacji
+function joinRoom(roomId, roomPassword) {
+    console.log("joinRoom");
+    let userNickname = JSON.parse(localStorage.getItem('userNickname'));
+    if (!userNickname) window.location.href = ('/home/index/');
+
+    let roomJoinData =
+    {
+        roomId: roomId,
+        playername: userNickname,
+        password: roomPassword
+    }
+
+    var options = {};
+    options.url = "/api/room/JoinRoom";
+    options.type = "POST";
+    options.contentType = "application/json";
+    options.data = JSON.stringify(roomJoinData);
+    options.dataType = "json";
+    options.success = (data) => {
+        console.log("Room joined!", data);
+        enterRoom(data);
+    };
+    options.error = (err) => {
+        console.log(err);
+    };
+    $.ajax(options);
+}
+
+function enterRoom(roomData) {
+
+    localStorage.setItem(roomData.roomID, JSON.stringify(roomData));
+
+    window.location.href = ('/home/gameroom/' + roomData.roomID);
 }
 
 function updateRoomList(divToPassList) {
@@ -99,13 +133,53 @@ function updateRoomList(divToPassList) {
 
             data.forEach(function (element) {
                 console.log(element);
-                let roomDiv = "<div class='roomInfo'><div class='roomName'>"
-                    + element.roomName
-                    + "</div><div class='playerName'>"
-                    + element.ownerName + "</div>";
-                roomDiv += element.requirePassword ? "<i class='fas fa-lock'></i></div>" : "<div></div></div>";
-                
-                $(divToPassList).append(roomDiv);
+
+
+
+
+                //let roomDiv = "<div class='roomInfo'><div class='roomName'>"
+                //    + element.roomName
+                //    + "</div><div class='playerName'>"
+                //    + element.ownerName + "</div>";
+                ////roomDiv += element.requirePassword ? "<i class='fas fa-lock'></i></div>" : "<div></div></div>";
+                //if (element.requirePassword) {
+                //    roomDiv += "<i class='fas fa-lock'></i>";
+                //    roomDiv.onclick = () => { togglePopUp(RoomPasswordPopUp) }
+                //}
+                //else {
+                //    roomDiv.onclick = () => { joinRoom(element.roomID, ""); };
+                //}
+                //roomDiv += "</div>";
+
+
+
+
+                let roomDiv = document.createElement("div");
+                roomDiv.classList.add("roomInfo");
+
+                let roomName = document.createElement("div");
+                roomName.classList.add("roomName");
+                roomName.textContent = element.roomName;
+
+                let playerName = document.createElement("div");
+                playerName.classList.add("playerName");
+                playerName.textContent = element.ownerName;
+
+
+                roomDiv.appendChild(roomName);
+                roomDiv.appendChild(playerName);
+
+                if (element.requirePassword) {
+                    let icon = document.createElement("i");
+                    icon.classList.add("fas", "fa-lock");
+                    roomDiv.appendChild(icon);
+                    roomDiv.onclick = () => { togglePopUp(RoomPasswordPopUp) }
+                }
+                else {
+                    roomDiv.onclick = () => { joinRoom(element.roomID, ""); };
+                }
+
+                document.querySelector(divToPassList).appendChild(roomDiv);
             });
         };
         options.error = function () {

@@ -20,7 +20,8 @@ namespace Battleships_MBernacki.Controllers
             return View();
         }
 
-        public IActionResult GameRoom()
+        //[FromRoute("/roomId")]
+        public IActionResult GameRoom(int roomId)
         {
             return View();
         }

@@ -14,14 +14,26 @@
     <label class="inputName">Password (optional)</label>
     <input type="text" id="roomPasswordInput" />
 
-    <button onclick="submitCreateRoom()">Create</button>
-    <button onclick="togglePopUp('#RoomCreatePopUp')">Cancel</button>
+    <div class="buttonHolder">
+        <button onclick="submitCreateRoom()">Create</button>
+        <button onclick="togglePopUp('#RoomCreatePopUp')">Cancel</button>
+    </div>
+</div>
+
+<div id="RoomPasswordPopUp" class="popUp" style="display:none;">
+    <label class="inputName">Enter room password</label>
+    <input type="text" id="roomEnterPasswordInput" />
+
+    <div class="buttonHolder">
+        <button onclick="joinRoom()">Create</button>
+        <button onclick="togglePopUp('#RoomPasswordPopUp')">Cancel</button>
+    </div>
 </div>
 
 <script>
     checkIfNicknameSet();
-    $(document).ready(function () {
-        updateRoomList("#result");
+    $(document).ready(() => {
+        updateRoomList("#roomList");
     });
 </script>
 
@@ -29,7 +41,7 @@
 <div id="lobby" class="flexContainer">
     <div id="lobbyHeader">
         <button onclick="togglePopUp('#RoomCreatePopUp')">Create New Room</button>
-        <button onclick="updateRoomList('#result')">Refresh</button>
+        <button onclick="updateRoomList('#roomList')">Refresh</button>
 
 
     </div>
@@ -37,7 +49,7 @@
 
 
 
-    <div id="result"></div>
+    <div id="roomList"></div>
     <div id="msg"></div>
     </div>
 

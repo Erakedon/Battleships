@@ -1,0 +1,27 @@
+﻿
+.map {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.map .mapRow {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+
+.map .cell {
+    width: 40px;
+    height: 40px;
+    margin: 2px;
+    background-color: rgba(37, 42, 255, 0.4);
+}
+
+#gameRoom #gameRoomBody {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 90vw;
+}

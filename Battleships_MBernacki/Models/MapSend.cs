@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace Battleships_MBernacki.Models
 {
-    public class RoomInfo
+    public class MapSend
     {
+        public short[,] Map { get; set; }// 0 - blank | 1 - ship | -1 - ship drowned
         public int RoomID { get; set; }
-        public string RoomName { get; set; }
-        public string OwnerName { get; set; }
-        public bool RequirePassword { get; set; }
+        public int PlayerKey { get; set; }
+
+
     }
 }

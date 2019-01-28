@@ -45,7 +45,7 @@ namespace Battleships_MBernacki.Controllers
             return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, RoomID = newGameRoom.RoomID , OponentName = "", RoomName = newGameRoom.RoomName });
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
         public IActionResult JoinRoom([FromBody] RoomJoin roomJoin)
@@ -55,7 +55,7 @@ namespace Battleships_MBernacki.Controllers
             var gameRoom = _gameRooms.GameRoomsList.Find(r => r.RoomID == roomJoin.RoomId);
 
             if (gameRoom == null) return NotFound("Game room could not be found");
-            if (!gameRoom.Instantiating) return NotFound("Game room is full");
+            if (gameRoom.IsRoomFull()) return NotFound("Game room is full");
             if (gameRoom.Password != "" && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
 
             int playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);//Trajkaczem obłożyć
@@ -68,17 +68,13 @@ namespace Battleships_MBernacki.Controllers
         [Produces("application/json")]
         public IActionResult GetRoomList()
         {
-            //GameRoom newGameRoom = new GameRoom(123, "Halko", "");
-            //newGameRoom.AddPlayer("Kazik");
-            //RoomList.Add(newGameRoom);
-
-
             List<RoomInfo> avalibleRooms = new List<RoomInfo>();
             _gameRooms.GameRoomsList.ForEach(room =>
             {
-                if (room.Instantiating)
+                if (!room.IsRoomFull())
                     avalibleRooms.Add(new RoomInfo()
                     {
+                        RoomID = room.RoomID,
                         OwnerName = room.PlayersNames[0],
                         RoomName = room.RoomName,
                         RequirePassword = room.RequirePassword
@@ -88,6 +84,25 @@ namespace Battleships_MBernacki.Controllers
             return Ok(avalibleRooms);
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public IActionResult PostMap([FromBody] MapSend mapInfo)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var gameRoom = _gameRooms.GameRoomsList.Find(r => r.RoomID == mapInfo.RoomID);
+
+            if(gameRoom == null) return BadRequest("Wrong Room Id");
+
+            var playerRoomId = gameRoom.GetPlayerRoomId(mapInfo.PlayerKey);
+            if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
+
+            gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
+
+
+            return Ok();
+        }
 
     }
 }

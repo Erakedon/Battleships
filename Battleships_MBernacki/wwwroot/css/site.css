@@ -47,3 +47,10 @@ body {
 
     background-color: #386d9f;
 }
+
+.buttonHolder {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+}

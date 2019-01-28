@@ -1,4 +1,4 @@
-﻿@model Battleships_MBernacki.Models.GameRoom
+﻿@model Battleships_MBernacki.Models.GameRoom;
 
 @{
     ViewData["Title"] = "GameRoom";
@@ -6,7 +6,53 @@
 
 <h2>GameRoom</h2>
 
-<h4>GameRoom</h4>
+<script>
+    //let tmp = Url.RouteUrl(ViewContext.RouteData.Values);
+    //console.log(Url.RouteUrl(ViewContext.RouteData.Values));
+
+    $(document).ready(() => {
+        initializeGameplay();
+        generateMap("#oponentMap", "oponent");
+        //generateMap("#playerMap", "player");
+    });
+</script>
+
+<div id="gameRoom" class="flexContainer">
+    <div id="gameRoomHeader">
+ 
+
+
+    </div>
+    <div id="gameRoomBody">
+
+        <div id="oponentField" class="gamefield">
+            <div id="oponentMap" class="map"></div>
+        </div>
+
+        <div id="playerField" class="gamefield">
+            <div id="playerMap" class="map"></div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h4>GameRoom</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -48,5 +94,5 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 

@@ -12,7 +12,7 @@
     
 }
 
-#lobbyHeader *
+#lobbyHeader button,div
 {
     margin-left: 5px;
     margin-right: 5px;
@@ -48,13 +48,33 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#lobby .roomName 
+/*#lobby #roomList
 {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}*/
+
+#lobby #roomInfo
+{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+#roomInfo .roomName {
+    flex-grow: 2;
     font-size: 2em;
 }
 
-#lobby .playerName 
-{
+#roomInfo .playerName {
+    flex-grow: 1;
     font-size: 1.4em;
     color: #aaa;
+}
+
+#roomInfo i
+{
+    flex-grow: 1;
 }

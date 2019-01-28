@@ -9,7 +9,7 @@ namespace Battleships_MBernacki.Models
     public class GameRooms : IGameRooms<GameRoom>
     {
         public List<GameRoom> GameRoomsList { get; set; }
-        private static RNGCryptoServiceProvider RngCsp = new RNGCryptoServiceProvider();
+        //private static RNGCryptoServiceProvider RngCsp = new RNGCryptoServiceProvider();
 
 
 
@@ -21,10 +21,13 @@ namespace Battleships_MBernacki.Models
         public int GenerateRoomId()
         {
             int newId;
-            bool sameId = false;
+            bool sameId;
             do
             {
-                newId = RngCsp.GetHashCode();
+                sameId = false;
+                //newId = RngCsp.GetHashCode();
+                Random random = new System.Random();
+                newId = random.GetHashCode();
 
                 GameRoomsList.ForEach((gr) => {
                     if (gr.RoomID == newId) sameId = true;
