@@ -8,9 +8,9 @@ namespace Battleships_MBernacki.Models
 {
     public class ShipsMap : IShipsMap
     {
-        public short[][] Map { get; set; }// 0 - blank | 1 - ship | -1 - miss | -2 - ship drowned
-        public short MapSize { get; set; }
-        public short[] ShipList { get; set; }
+        private short[][] Map { get; set; }// 0 - blank | 1 - ship | -1 - miss | -2 - ship drowned
+        private short MapSize { get; set; }
+        private short[] ShipList { get; set; }
         
         public ShipsMap(short[][] map, short mapSize, short[] shipList)
         {

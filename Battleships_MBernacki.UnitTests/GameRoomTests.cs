@@ -12,19 +12,40 @@ namespace Battleships_MBernacki.UnitTests
     class GameRoomTests
     {
         GameRoom _gameRoom;
+        
+        short _mapSize;
+        short[] _shipsList;
 
-        Mock<IShipsMap> _playerOneMap;
-        Mock<IShipsMap> _playerTwoMap;
-        Mock<IShipsMap> _playerThreeMap;
+        short[][] _properMap1;
+        short[][] _properMap2;
+        short[][] _properMap3;
+
+        short[][] _badMap1;
+
 
         [SetUp]
         public void Setup()
         {
-            _gameRoom = new GameRoom(123456, "Example Name", "", 6, new short[] { 0, 2, 2, 1 });
+            _mapSize = 3;
+            _shipsList = new short[] { 2, 1, 0, 0 };
 
-            _playerOneMap = new Mock<IShipsMap>();
-            _playerTwoMap = new Mock<IShipsMap>();
-            _playerThreeMap = new Mock<IShipsMap>();
+            _gameRoom = new GameRoom(123456, "Example Name", "", _mapSize, _shipsList );
+            
+            _properMap1 = new short[][] { new short[]{ 0, 1, 1 },
+                                          new short[]{ 0, 0, 0 },
+                                          new short[]{ 1, 0, 1 } };
+
+            _properMap2 = new short[][] { new short[]{ 1, 0, 1 },
+                                          new short[]{ 0, 0, 1 },
+                                          new short[]{ 1, 0, 0 } };
+
+            _properMap3 = new short[][] { new short[]{ 1, 0, 1 },
+                                          new short[]{ 0, 0, 0 },
+                                          new short[]{ 1, 1, 0 } };
+
+            _badMap1 = new short[][] { new short[]{ 1, 0, 1 },
+                                       new short[]{ 0, 1, 0 },
+                                       new short[]{ 1, 1, 0 } };
 
 
         }
@@ -35,17 +56,15 @@ namespace Battleships_MBernacki.UnitTests
             int result = _gameRoom.AddPlayer("Nickname");
 
             Assert.Positive(result);
-
         }
 
         [Test]
-        public void AddPlayer_AddsTwoPlayers_ChecksIfOutputIntsAreNotTheSame()
+        public void AddPlayer_AddsTwoPlayers_OutputsAreNotTheSame()
         {
             int result1 = _gameRoom.AddPlayer("Nickname1");
             int result2 = _gameRoom.AddPlayer("Nickname2");
 
             Assert.AreNotEqual(result1, result2);
-
         }
 
         [Test]
@@ -65,7 +84,7 @@ namespace Battleships_MBernacki.UnitTests
         }
 
         [Test]
-        public void GetPlayerRoomId_AddsTwoPlayers_ChecksIfRoomIdOfFirstEqualsZero()
+        public void GetPlayerRoomId_AddsTwoPlayersAndGetsIdOfFirst_RoomIdOfFirstEqualsZero()
         {
             int id1 = _gameRoom.AddPlayer("Nickname1");
             int id2 = _gameRoom.AddPlayer("Nickname2");
@@ -73,11 +92,10 @@ namespace Battleships_MBernacki.UnitTests
             int result = _gameRoom.GetPlayerRoomId(id1);
 
             Assert.AreEqual(0, result);
-
         }
 
         [Test]
-        public void GetPlayerRoomId_AddsTwoPlayers_ChecksIfRoomIdOfSecondEqualsOne()
+        public void GetPlayerRoomId_AddsTwoPlayersAndGetsIdOfSecond_RoomIdOfSecondEqualsOne()
         {
             int id1 = _gameRoom.AddPlayer("Nickname1");
             int id2 = _gameRoom.AddPlayer("Nickname2");
@@ -85,29 +103,200 @@ namespace Battleships_MBernacki.UnitTests
             int result = _gameRoom.GetPlayerRoomId(id2);
 
             Assert.AreEqual(1, result);
-
         }
 
         [Test]
-        public void MapsReady_NoMapArePassed_ReturnFalse()
+        public void GetPlayerRoomId_AddsOnePlayerPassesRandomId_ReturnsMinusOne(
+            [Random(1000000, 9999999, 5)] int id)
         {
-            bool result = _gameRoom.MapsReady();
+            _gameRoom.AddPlayer("Nickname1");            
+
+            int result = _gameRoom.GetPlayerRoomId(id);
+
+            Assert.AreEqual(-1, result);
+        }
+
+        [Test]
+        public void GetPlayerRoomId_AddsTwoPlayersPassesRandomId_ReturnsMinusOne(
+            [Random(1000000, 9999999, 5)] int id)
+        {
+            _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddPlayer("Nickname2");
+
+            int result = _gameRoom.GetPlayerRoomId(id);
+
+            Assert.AreEqual(-1, result);
+        }
+
+        [Test]
+        public void IsRoomFull_AddNoPlayer_ReturnFalse()
+        {
+            bool result = _gameRoom.IsRoomFull();
 
             Assert.False(result);
+        }
 
+        [Test]
+        public void IsRoomFull_AddOnePlayer_ReturnFalse()
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+
+            bool result = _gameRoom.IsRoomFull();
+
+            Assert.False(result);
+        }
+
+        [Test]
+        public void IsRoomFull_AddTwoPlayers_ReturnFalse()
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id2 = _gameRoom.AddPlayer("Nickname2");
+
+            bool result = _gameRoom.IsRoomFull();
+
+            Assert.True(result);
+        }
+
+        [Test]
+        public void AddMap_PassesRandomPlayerIdAndCorrectMap_ReturnsFalse(
+            [Random(1000000, 9999999, 5)] int id)
+        {
+            bool result = _gameRoom.AddMap(id, _properMap1);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void AddMap_AddsPlayerPassesRandomPlayerIdAndCorrectMap_ReturnsFalse(
+            [Random(1000000, 9999999, 5)] int id)
+        {
+            _gameRoom.AddPlayer("Nickname1");
+            bool result = _gameRoom.AddMap(id, _properMap1);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void AddMap_AddsTwoPlayersPassesRandomPlayerIdAndCorrectMap_ReturnsFalse(
+            [Random(1000000, 9999999, 5)] int id)
+        {
+            _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddPlayer("Nickname1");
+
+            bool result = _gameRoom.AddMap(id, _properMap1);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void AddMap_AddsPlayerPassesCorrectIdAndBadMap_ReturnsFalse()
+        {
+            int id = _gameRoom.AddPlayer("Nickname1");
+            bool result = _gameRoom.AddMap(id, _badMap1);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void AddMap_AddsPlayerPassesCorrectIdAndCorrectMap_ReturnsTrue()
+        {
+            int id = _gameRoom.AddPlayer("Nickname1");
+            bool result = _gameRoom.AddMap(id, _properMap1);
+            Assert.True(result);
+        }
+
+        [Test]
+        public void AddMap_OnePlayerAddsMap_GameOnValueIsFalse()
+        {
+            int id = _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddMap(id, _properMap1);
+
+            bool result = _gameRoom.GameOn;
+
+            Assert.False(result);
+        }
+
+        [Test]
+        public void AddMap_TwoPlayersCorrectMaps_GameOnValueIsTrue()
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddMap(id1, _properMap1);
+            int id2 = _gameRoom.AddPlayer("Nickname2");
+            _gameRoom.AddMap(id2, _properMap2);
+
+            bool result = _gameRoom.GameOn;
+
+            Assert.True(result);
+        }
+
+        [Test]
+        public void PlayerShootReq_MapsNotSetPassesProperValues_ReturnsProperString(
+            [Values(0, 1, 2)] int x,
+            [Values(0, 1, 2)] int y)
+        {
+            int id = _gameRoom.AddPlayer("Nickname1");
+
+            string result = _gameRoom.PlayerShootReq(id, x, y);
+
+            Assert.AreEqual("Game have not started", result);
         }
 
 
         [Test]
-        public void MapsReady_SingleMapIsPassed_ReturnFalse()
+        public void PlayerShootReq_SetsSingleMapSetPassesProperValues_ReturnsProperString(
+            [Values(0, 1, 2)] int x,
+            [Values(0, 1, 2)] int y)
         {
+            int id = _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddMap(id, _properMap1);
 
+            string result = _gameRoom.PlayerShootReq(id, x, y);
 
+            Assert.AreEqual("Game have not started", result);
+        }
 
-            bool result = _gameRoom.MapsReady();
+        [Test]
+        public void PlayerShootReq_MapsSetAndPassesOutOfBoundValues_ReturnsProperString(
+            [Values(-5, -1, 5, 12)] int x,
+            [Values(-5, -1, 5, 12)] int y)
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id2 = _gameRoom.AddPlayer("Nickname2");
+            _gameRoom.AddMap(id1, _properMap1);
+            _gameRoom.AddMap(id2, _properMap2);
 
-            Assert.False(result);
+            string result = _gameRoom.PlayerShootReq(id1, x, y);
 
+            Assert.AreEqual("Wrong Coordinates", result);
+        }
+
+        [Test]
+        public void PlayerShootReq_MapsSetAndPassesSecondPlayerIdAndProperCoordinates_ReturnsProperString(
+            [Values(0, 1, 2)] int x,
+            [Values(0, 1, 2)] int y)
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id2 = _gameRoom.AddPlayer("Nickname2");
+            _gameRoom.AddMap(id1, _properMap1);
+            _gameRoom.AddMap(id2, _properMap2);
+
+            string result = _gameRoom.PlayerShootReq(id2, x, y);
+
+            Assert.AreEqual("Not player turn", result);
+        }
+
+        [Test]
+        public void PlayerShootReq_MapsSetAndPassesProperValues_ValuesSavedInLastActionObject(
+            [Values(0, 1, 2)] int x,
+            [Values(0, 1, 2)] int y)
+        {
+            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id2 = _gameRoom.AddPlayer("Nickname2");
+            _gameRoom.AddMap(id1, _properMap1);
+            _gameRoom.AddMap(id2, _properMap2);
+
+            string result = _gameRoom.PlayerShootReq(id1, x, y);
+
+            Assert.Multiple(() => {
+                Assert.AreEqual(x, _gameRoom.LastAction.X);
+                Assert.AreEqual(y, _gameRoom.LastAction.Y);
+            });
         }
 
 

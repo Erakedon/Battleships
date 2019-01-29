@@ -13,9 +13,9 @@ namespace Battleships_MBernacki.Models
         public string RoomName { get; set; }
         private List<int> RoomPlayersKeys { get; set; } = new List<int>(2);
         public List<string> PlayersNames { get; set; } = new List<string>(2);
-        public List<ShipsMap> Maps { get; set; } = new List<ShipsMap>(2);
-        public short MapSize { get; set; }
-        public short[] ShipList { get; set; }
+        private List<ShipsMap> Maps { get; set; } = new List<ShipsMap>(2);
+        public short MapSize { get; }
+        public short[] ShipList { get; }
         //private string Password { get; set; }
         //public bool RequirePassword { get; }
 
@@ -34,7 +34,7 @@ namespace Battleships_MBernacki.Models
             //if (password == "") RequirePassword = false;
             //else RequirePassword = true;
 
-            CurrentPlayerTurn = 1;
+            CurrentPlayerTurn = 0;
         }
 
         public int AddPlayer(string name)
@@ -69,17 +69,17 @@ namespace Battleships_MBernacki.Models
 
         public int GetPlayerRoomId(int playerkey)
         {
-            int id = 0;
+            int id = -1;
             id = RoomPlayersKeys.FindIndex(k => k == playerkey);
             return id;
         }
 
-        public bool MapsReady()
-        {
-            if (Maps.Count() < 2) return false;
+        //public bool MapsReady()
+        //{
+        //    if (Maps.Count() == 2) return true;
 
-            return true;
-        }
+        //    return false;
+        //}
 
         public bool IsRoomFull()
         {
@@ -87,16 +87,16 @@ namespace Battleships_MBernacki.Models
             else return false;
         }
 
-        public bool AddMap(int playerKey,short[][] map, short mapSize, short[] shipList)
+        public bool AddMap(int playerKey,short[][] map)
         {
             int playerId = GetPlayerRoomId(playerKey);
-            //if (playerId == 0) return false;
+            if (playerId == -1) return false;
 
-            ShipsMap shipsMap = new ShipsMap(map, mapSize, shipList);
+            if (GameOn) return false;
+
+            ShipsMap shipsMap = new ShipsMap(map, MapSize, ShipList);
             if (!shipsMap.ValidateMap()) return false;
-
-            //Maps.Add(shipsMap);
-            //Maps[playerId] = shipsMap;
+            
             Maps.Insert(playerId, shipsMap);
 
             if (Maps.Count == 2) GameOn = true;

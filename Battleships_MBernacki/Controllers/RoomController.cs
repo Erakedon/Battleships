@@ -121,7 +121,7 @@ namespace Battleships_MBernacki.Controllers
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
 
             //var shipsMap = new ShipsMap(mapInfo.Map,gameRoom.MapSize,gameRoom.ShipList);
-            bool isMapOk = gameRoom.AddMap(mapInfo.PlayerKey, mapInfo.Map, gameRoom.MapSize, gameRoom.ShipList);
+            bool isMapOk = gameRoom.AddMap(mapInfo.PlayerKey, mapInfo.Map);
             if(!isMapOk) return BadRequest("Map is not correct");
 
 

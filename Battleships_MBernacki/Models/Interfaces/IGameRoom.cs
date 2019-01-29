@@ -10,9 +10,9 @@ namespace Battleships_MBernacki.Models.Interfaces
         int RoomID { get; set; }
         string RoomName { get; set; }
         List<string> PlayersNames { get; set; }
-        List<ShipsMap> Maps { get; set; }
-        short MapSize { get; set; }
-        short[] ShipList { get; set; }
+        //List<ShipsMap> Maps { get; set; }
+        short MapSize { get; }
+        short[] ShipList { get; }
         //bool RequirePassword { get; }
 
         int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
@@ -23,9 +23,9 @@ namespace Battleships_MBernacki.Models.Interfaces
         //bool SetPassword(string oldPassword, string newPassword);
         //bool CheckPassword(string password);
         int GetPlayerRoomId(int playerkey);
-        bool MapsReady();
+        //bool MapsReady();
         bool IsRoomFull();
-        bool AddMap(int playerKey, short[][] map, short mapSize, short[] shipList);
+        bool AddMap(int playerKey, short[][] map);
         string PlayerShootReq(int playerKey, int x, int y);
         bool IsPlayerTurn(int playerKey);
             
