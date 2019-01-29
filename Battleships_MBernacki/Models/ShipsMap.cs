@@ -1,18 +1,17 @@
-﻿using System;
+﻿using Battleships_MBernacki.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Battleships_MBernacki.Models
 {
-    public class ShipsMap
+    public class ShipsMap : IShipsMap
     {
         public short[][] Map { get; set; }// 0 - blank | 1 - ship | -1 - miss | -2 - ship drowned
         public short MapSize { get; set; }
         public short[] ShipList { get; set; }
-        //public List<int[]>[] ShipsLeft { get; set; }
-        //public List<List<int>>[] ShipsLeft { get; set; }
-
+        
         public ShipsMap(short[][] map, short mapSize, short[] shipList)
         {
             Map = map;
@@ -26,7 +25,6 @@ namespace Battleships_MBernacki.Models
 
         private List<int[]> ShipPartsLeft { get; set; }
 
-        //public List<int[]>[] ShipsLeft { get; set; }
 
         public bool ValidateMap()
         {
@@ -44,11 +42,6 @@ namespace Battleships_MBernacki.Models
 
 
             ShipPartsLeft = new List<int[]>();
-            //ShipsLeft = new List<int[]>[ShipList.Length];
-            //for (int i = 0; i < ShipList.Length; i++)
-            //{
-            //    ShipsLeft[i] = new List<int[]>();
-            //}
 
             ShipsToFound = ShipList;
 
@@ -96,10 +89,7 @@ namespace Battleships_MBernacki.Models
                             }
                             break;
                         }
-
                     }
-
-
                 }
             }
 
@@ -147,7 +137,6 @@ namespace Battleships_MBernacki.Models
             if (Map[x][y] == 1)
             {
                 SearchedCells[x][y] = true;
-                //if (!CheckSlants(x, y)) return false;
 
                 return 1 + FindInDirection(x + dirX, y + dirY, dirX, dirY);
             }
@@ -161,16 +150,8 @@ namespace Battleships_MBernacki.Models
 
         public string Shoot(int x, int y)
         {
-            //int shipPartsLeft = 0;
             bool hit = false;
-            //for (int i = 0; i < ShipsLeft.Length; i++)
-            //{
-            //    bool wasHit = ShipsLeft[i].Remove(new int[] { x, y });
-            //    if (wasHit) hit = true;
-            //    shipPartsLeft += ShipsLeft.Length;
-            //}
 
-            //hit = ShipPartsLeft.Remove(point);
             int[] pointToRemove = new int[] { x, y };
 
             ShipPartsLeft.ForEach( s => {

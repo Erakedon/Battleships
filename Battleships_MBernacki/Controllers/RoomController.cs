@@ -64,9 +64,16 @@ namespace Battleships_MBernacki.Controllers
 
             if (gameRoom == null) return NotFound("Game room could not be found");
             if (gameRoom.IsRoomFull()) return NotFound("Game room is full");
-            if (gameRoom.RequirePassword  && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
-
-            int playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);//Trajkaczem obłożyć
+            //if (gameRoom.RequirePassword  && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
+            int playerRoomKey;
+            try
+            {
+                playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);
+            }
+            catch
+            {
+                return BadRequest("Wrong Player Key");
+            }
 
             return Ok(new JoinedRoomInfo() {
                 PlayerRoomKey = playerRoomKey,
@@ -92,7 +99,7 @@ namespace Battleships_MBernacki.Controllers
                         RoomID = room.RoomID,
                         OwnerName = room.PlayersNames[0],
                         RoomName = room.RoomName,
-                        RequirePassword = room.RequirePassword
+                        RequirePassword = false
                     });
             });
 

@@ -13,14 +13,15 @@ namespace Battleships_MBernacki.Models.Interfaces
         List<ShipsMap> Maps { get; set; }
         short MapSize { get; set; }
         short[] ShipList { get; set; }
-        bool RequirePassword { get; }
+        //bool RequirePassword { get; }
 
         int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
         PlayerAction LastAction { get; set; }
         bool GameOn { get; set; }//True if both players set their maps
 
         int AddPlayer(string name);
-        bool CheckPassword(string password);
+        //bool SetPassword(string oldPassword, string newPassword);
+        //bool CheckPassword(string password);
         int GetPlayerRoomId(int playerkey);
         bool MapsReady();
         bool IsRoomFull();

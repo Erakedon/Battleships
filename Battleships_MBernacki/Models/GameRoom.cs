@@ -16,8 +16,8 @@ namespace Battleships_MBernacki.Models
         public List<ShipsMap> Maps { get; set; } = new List<ShipsMap>(2);
         public short MapSize { get; set; }
         public short[] ShipList { get; set; }
-        private string Password { get; set; }
-        public bool RequirePassword { get; }
+        //private string Password { get; set; }
+        //public bool RequirePassword { get; }
 
         public int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
         public PlayerAction LastAction { get; set; }
@@ -30,9 +30,9 @@ namespace Battleships_MBernacki.Models
             RoomName = roomName;
             MapSize = mapsize;
             ShipList = shipList;
-            Password = password;
-            if (password == "") RequirePassword = false;
-            else RequirePassword = true;
+            //Password = password;
+            //if (password == "") RequirePassword = false;
+            //else RequirePassword = true;
 
             CurrentPlayerTurn = 1;
         }
@@ -53,11 +53,19 @@ namespace Battleships_MBernacki.Models
             return playerSecretKey;
         }
 
-        public bool CheckPassword(string password)
-        {
-            if (Password == password) return true;
-            else return false;
-        }
+        //public bool SetPassword(string oldPassword, string newPassword)
+        //{
+        //    if (Password == "" || Password == oldPassword) Password = newPassword;
+        //    else return false;
+
+        //    return true;
+        //}
+
+        //public bool CheckPassword(string password)
+        //{
+        //    if (Password == password) return true;
+        //    else return false;
+        //}
 
         public int GetPlayerRoomId(int playerkey)
         {
@@ -68,7 +76,7 @@ namespace Battleships_MBernacki.Models
 
         public bool MapsReady()
         {
-            if (Maps[0] == null || Maps[1] == null) return false;
+            if (Maps.Count() < 2) return false;
 
             return true;
         }
@@ -87,8 +95,9 @@ namespace Battleships_MBernacki.Models
             ShipsMap shipsMap = new ShipsMap(map, mapSize, shipList);
             if (!shipsMap.ValidateMap()) return false;
 
-            Maps.Add(shipsMap);
+            //Maps.Add(shipsMap);
             //Maps[playerId] = shipsMap;
+            Maps.Insert(playerId, shipsMap);
 
             if (Maps.Count == 2) GameOn = true;
 

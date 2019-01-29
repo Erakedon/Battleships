@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Battleships_MBernacki.Models.Interfaces;
 using System.Threading.Tasks;
 
 namespace Battleships_MBernacki.Models
