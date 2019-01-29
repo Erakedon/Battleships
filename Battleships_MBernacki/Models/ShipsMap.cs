@@ -24,7 +24,9 @@ namespace Battleships_MBernacki.Models
         private bool[][] SearchedCells { get; set; }
         private short[] ShipsToFound { get; set; }
 
-        public List<int[]>[] ShipsLeft { get; set; }
+        private List<int[]> ShipPartsLeft { get; set; }
+
+        //public List<int[]>[] ShipsLeft { get; set; }
 
         public bool ValidateMap()
         {
@@ -40,11 +42,13 @@ namespace Battleships_MBernacki.Models
                     SearchedCells[i][j] = false;
             }
 
-            ShipsLeft = new List<int[]>[ShipList.Length];
-            for (int i = 0; i < ShipList.Length; i++)
-            {
-                ShipsLeft[i] = new List<int[]>();
-            }
+
+            ShipPartsLeft = new List<int[]>();
+            //ShipsLeft = new List<int[]>[ShipList.Length];
+            //for (int i = 0; i < ShipList.Length; i++)
+            //{
+            //    ShipsLeft[i] = new List<int[]>();
+            //}
 
             ShipsToFound = ShipList;
 
@@ -73,7 +77,8 @@ namespace Battleships_MBernacki.Models
                             while (x >= i - sxNeg)
                             {
                                 if (!CheckSlants(x, j)) return false;
-                                ShipsLeft[sxNeg + sxPos].Add(new int[2] { x, j });
+                                //ShipsLeft[sxNeg + sxPos].Add(new int[2] { x, j });
+                                ShipPartsLeft.Add(new int[] { x, j });
                                 x--;
                             }
                             break;
@@ -85,7 +90,8 @@ namespace Battleships_MBernacki.Models
                             while (y >= j - syNeg)
                             {
                                 if (!CheckSlants(i, y)) return false;
-                                ShipsLeft[sxNeg + sxPos].Add(new int[2] { i, y });
+                                //ShipsLeft[sxNeg + sxPos].Add(new int[2] { i, y });
+                                ShipPartsLeft.Add(new int[] { i, y });
                                 y--;
                             }
                             break;
@@ -155,16 +161,29 @@ namespace Battleships_MBernacki.Models
 
         public string Shoot(int x, int y)
         {
-            int shipPartsLeft = 0;
+            //int shipPartsLeft = 0;
             bool hit = false;
-            for (int i = 0; i < ShipsLeft.Length; i++)
-            {
-                bool wasHit = ShipsLeft[i].Remove(new int[] { x, y });
-                if (wasHit) hit = true;
-                shipPartsLeft += ShipsLeft.Length;
-            }
+            //for (int i = 0; i < ShipsLeft.Length; i++)
+            //{
+            //    bool wasHit = ShipsLeft[i].Remove(new int[] { x, y });
+            //    if (wasHit) hit = true;
+            //    shipPartsLeft += ShipsLeft.Length;
+            //}
 
-            if(shipPartsLeft == 0) return "win";
+            //hit = ShipPartsLeft.Remove(point);
+            int[] pointToRemove = new int[] { x, y };
+
+            ShipPartsLeft.ForEach( s => {
+                if (s[0] == x && s[1] == y)
+                {
+                    hit = true;
+                    pointToRemove = s;
+                }
+            });
+
+            if (hit) ShipPartsLeft.Remove(pointToRemove);
+
+            if(ShipPartsLeft.Count() == 0) return "win";
             if (hit) return "hit";
             return "miss";
         }

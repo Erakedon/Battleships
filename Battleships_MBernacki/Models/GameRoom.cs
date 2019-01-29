@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Battleships_MBernacki.Models.Interfaces;
 
 namespace Battleships_MBernacki.Models
 {
-    public class GameRoom
+    public class GameRoom : IGameRoom
     {
         public int RoomID { get; set; }
         public string RoomName { get; set; }
@@ -15,15 +16,13 @@ namespace Battleships_MBernacki.Models
         public List<ShipsMap> Maps { get; set; } = new List<ShipsMap>(2);
         public short MapSize { get; set; }
         public short[] ShipList { get; set; }
-        public string Password { get; set; }
+        private string Password { get; set; }
         public bool RequirePassword { get; }
 
         public int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
         public PlayerAction LastAction { get; set; }
-        //public bool Instantiating = true;//Waiting for second player
-        public bool GameOn = false;//True if both players set their maps
-
-        //private static RNGCryptoServiceProvider RngCsp = new RNGCryptoServiceProvider();
+        public bool GameOn { get; set; } = false;//True if both players set their maps
+        
 
         public GameRoom(int roomID, string roomName, string password, short mapsize, short[] shipList)
         {
@@ -31,7 +30,6 @@ namespace Battleships_MBernacki.Models
             RoomName = roomName;
             MapSize = mapsize;
             ShipList = shipList;
-            //RoomPlayersKeys = new List<int>(2);
             Password = password;
             if (password == "") RequirePassword = false;
             else RequirePassword = true;
@@ -41,14 +39,13 @@ namespace Battleships_MBernacki.Models
 
         public int AddPlayer(string name)
         {
-            //if(IsRoomFull())
-            //{
-            //    throw new InvalidOperationException("Room is full");
-            //}
+            if (IsRoomFull())
+            {
+                throw new InvalidOperationException("Room is full");
+            }
 
             PlayersNames.Add(name);
-
-            //int playerSecretKey = RngCsp.GetHashCode();
+            
             Random random = new System.Random();
             int playerSecretKey = random.GetHashCode();
             RoomPlayersKeys.Add(playerSecretKey);
@@ -78,8 +75,6 @@ namespace Battleships_MBernacki.Models
 
         public bool IsRoomFull()
         {
-            //if (PlayersNames[0] == null || PlayersNames[1] == null) return false;
-
             if (PlayersNames.Count() == 2) return true;
             else return false;
         }

@@ -11,5 +11,7 @@ namespace Battleships_MBernacki.Models
         public int RoomID { get; set; }
         public string OponentName { get; set; }
         public int PlayerRoomKey { get; set; }
+        public short[] ShipsList { get; set; }
+        public short MapSize { get; set; }
     }
 }

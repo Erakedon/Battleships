@@ -35,7 +35,8 @@ namespace Battleships_MBernacki.Controllers
             else password = roomCreation.Password;
 
             short[] shipList = new short[] { 0, 2, 1, 1 };//Index + 1 is the indicator of ship size
-            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password,6,shipList);
+            short mapSize = 6;
+            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password,mapSize,shipList);
             int playerRoomKey = newGameRoom.AddPlayer(roomCreation.PlayerName);
 
             //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
@@ -43,7 +44,13 @@ namespace Battleships_MBernacki.Controllers
             _gameRooms.GameRoomsList.Add(newGameRoom);
 
 
-            return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, RoomID = newGameRoom.RoomID , OponentName = "", RoomName = newGameRoom.RoomName });
+            return Ok(new JoinedRoomInfo() {
+                PlayerRoomKey = playerRoomKey,
+                RoomID = newGameRoom.RoomID ,
+                OponentName = "",
+                RoomName = newGameRoom.RoomName,
+                ShipsList = shipList,
+                MapSize = mapSize });
         }
 
         [HttpPost]
@@ -57,11 +64,18 @@ namespace Battleships_MBernacki.Controllers
 
             if (gameRoom == null) return NotFound("Game room could not be found");
             if (gameRoom.IsRoomFull()) return NotFound("Game room is full");
-            if (gameRoom.Password != "" && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
+            if (gameRoom.RequirePassword  && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
 
             int playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);//Trajkaczem obłożyć
 
-            return Ok(new JoinedRoomInfo() { PlayerRoomKey = playerRoomKey, RoomID = gameRoom.RoomID, OponentName = "", RoomName = gameRoom.RoomName });
+            return Ok(new JoinedRoomInfo() {
+                PlayerRoomKey = playerRoomKey,
+                RoomID = gameRoom.RoomID,
+                OponentName = gameRoom.PlayersNames[0],
+                RoomName = gameRoom.RoomName,
+                ShipsList = gameRoom.ShipList,
+                MapSize = gameRoom.MapSize
+            });
         }
 
         [HttpGet]
@@ -105,12 +119,13 @@ namespace Battleships_MBernacki.Controllers
 
 
             //gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
-
+            string oponentName = "";
+            if (gameRoom.IsRoomFull()) oponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2];
 
             return Ok(new RoomstateInfo()
             {
                 RoomID = gameRoom.RoomID,
-                OponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2],
+                OponentName = oponentName,
                 AskingPlayerTurn = gameRoom.IsPlayerTurn(mapInfo.PlayerKey),
                 LastAction = gameRoom.LastAction,
                 GameOn = gameRoom.GameOn
@@ -130,11 +145,13 @@ namespace Battleships_MBernacki.Controllers
 
             var playerRoomId = gameRoom.GetPlayerRoomId(query.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
-                       
+
+            string oponentName = "";
+            if (gameRoom.IsRoomFull()) oponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2];
 
             return Ok(new RoomstateInfo() {
                 RoomID = gameRoom.RoomID,
-                OponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2],
+                OponentName = oponentName,
                 AskingPlayerTurn = gameRoom.IsPlayerTurn(query.PlayerKey),
                 LastAction = gameRoom.LastAction,
                 GameOn = gameRoom.GameOn
@@ -154,6 +171,8 @@ namespace Battleships_MBernacki.Controllers
 
             var playerRoomId = gameRoom.GetPlayerRoomId(shootInfo.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
+
+            if(!gameRoom.GameOn) return BadRequest("Players did nit sets theirs maps yet");
 
             string result = gameRoom.PlayerShootReq(shootInfo.PlayerKey, shootInfo.X, shootInfo.Y);
 

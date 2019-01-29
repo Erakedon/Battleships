@@ -46,6 +46,7 @@
                 default:
                     break;
             }
+            this.findBlank();
 
 
             this.gameplay.watchForTurn();
