@@ -11,7 +11,8 @@
     //console.log(Url.RouteUrl(ViewContext.RouteData.Values));
 
     $(document).ready(() => {
-        initializeGameplay();
+        Gameplay.initializeGameplay(@ViewData["RoomId"]);
+        //initializeGameplay();
         //generateMap("#oponentMap", "oponent");
         //generateMap("#playerMap", "player");
     });

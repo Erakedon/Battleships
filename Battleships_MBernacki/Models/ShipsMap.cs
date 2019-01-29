@@ -10,7 +10,7 @@ namespace Battleships_MBernacki.Models
         public short[][] Map { get; set; }// 0 - blank | 1 - ship | -1 - miss | -2 - ship drowned
         public short MapSize { get; set; }
         public short[] ShipList { get; set; }
-        public List<int[]>[] ShipsLeft { get; set; }
+        //public List<int[]>[] ShipsLeft { get; set; }
         //public List<List<int>>[] ShipsLeft { get; set; }
 
         public ShipsMap(short[][] map, short mapSize, short[] shipList)
@@ -23,17 +23,24 @@ namespace Battleships_MBernacki.Models
 
         private bool[][] SearchedCells { get; set; }
         private short[] ShipsToFound { get; set; }
-        
+
+        public List<int[]>[] ShipsLeft { get; set; }
+
         public bool ValidateMap()
         {
             if (Map.Length != MapSize) return false;
             for (int i = 0; i < Map.Length; i++)
                 if (Map[i].Length != MapSize) return false;
 
+            SearchedCells = new bool[MapSize][];
             for (int i = 0; i < MapSize; i++)
+            {
+                SearchedCells[i] = new bool[MapSize];
                 for (int j = 0; j < MapSize; j++)
                     SearchedCells[i][j] = false;
+            }
 
+            ShipsLeft = new List<int[]>[ShipList.Length];
             for (int i = 0; i < ShipList.Length; i++)
             {
                 ShipsLeft[i] = new List<int[]>();

@@ -21,8 +21,9 @@ namespace Battleships_MBernacki.Controllers
         }
 
         //[FromRoute("/roomId")]
-        public IActionResult GameRoom(int roomId)
+        public IActionResult GameRoom(int id)
         {
+            ViewData["RoomId"] = id;
             return View();
         }
         

@@ -87,12 +87,13 @@ namespace Battleships_MBernacki.Models
         public bool AddMap(int playerKey,short[][] map, short mapSize, short[] shipList)
         {
             int playerId = GetPlayerRoomId(playerKey);
-            if (playerId == 0) return false;
+            //if (playerId == 0) return false;
 
             ShipsMap shipsMap = new ShipsMap(map, mapSize, shipList);
             if (!shipsMap.ValidateMap()) return false;
 
-            Maps[playerId] = shipsMap;
+            Maps.Add(shipsMap);
+            //Maps[playerId] = shipsMap;
 
             if (Maps.Count == 2) GameOn = true;
 

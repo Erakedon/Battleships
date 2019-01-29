@@ -8,8 +8,11 @@
 
 
     constructor(containerId, _mapSize, shipsList) {
-        this.mapDOMRef = new Array(mapSize);
-        this.generateMap(containerId);
+        this.mapDOMRef = new Array(_mapSize);
+        this.containerId = containerId;
+
+        console.log(this.containerId);
+        this.generateMap(this.containerId);
         console.log(this.mapDOMRef);
 
         this.mapSize = _mapSize;
@@ -31,26 +34,27 @@
     generateMap(container) {
         //let arrayReference;
         //if (allegiance == "oponent") arrayReference = oponentCells;
+        console.log(this.containerId);
         //else arrayReference = playerCells;
 
-        for (let i = 0; i < mapSize; i++) {
+        for (let i = 0; i < this.mapSize; i++) {
 
             let row = document.createElement("div");
             row.classList.add('mapRow');
 
-            this.mapDOMRef[i] = new Array(mapSize);
+            this.mapDOMRef[i] = new Array(this.mapSize);
 
-            for (let j = 0; j < mapSize; j++) {
+            for (let j = 0; j < this.mapSize; j++) {
                 let cell = document.createElement("div");
                 cell.classList.add('cell');
-                cell.onclick = () => { this.setShip(i,j) }
+                //cell.onclick = () => { this.setShip(i,j) }
 
                 this.mapDOMRef[i][j] = cell;
 
                 row.appendChild(cell);
             }
 
-            document.querySelector(container).appendChild(row)
+            document.querySelector(this.containerId).appendChild(row)
         }
     }
 
@@ -85,14 +89,14 @@
                     let syNeg = this.findInDirection(i, j - 1, 0, -1);
                     let syPos = this.findInDirection(i, j + 1, 0, 1);
 
-                    //if (sxNeg + sxPos + syNeg + syPos > 0) {
-                    //    console.log(sxNeg, sxPos, syNeg,syPos)
-                    //}
+                    if (sxNeg + sxPos + syNeg + syPos > 0) {
+                        console.log(sxNeg, sxPos, syNeg,syPos)
+                    }
 
                     if (sxNeg + sxPos == biggestShip - 1) {
                         this.shipsLeft[biggestShip - 1] -= 1;
                         let x = i + sxPos;
-                        if (i + 1 < this.mapSize) this.mapTokens[x + 1][j] = -1;
+                        if (x + 1 < this.mapSize) this.mapTokens[x + 1][j] = -1;
                         while (x >= i - sxNeg) {
                             this.mapTokens[x][j] = -2;
                             x--;

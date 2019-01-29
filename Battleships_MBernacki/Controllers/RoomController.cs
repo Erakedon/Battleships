@@ -107,7 +107,14 @@ namespace Battleships_MBernacki.Controllers
             //gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
 
 
-            return Ok();
+            return Ok(new RoomstateInfo()
+            {
+                RoomID = gameRoom.RoomID,
+                OponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2],
+                AskingPlayerTurn = gameRoom.IsPlayerTurn(mapInfo.PlayerKey),
+                LastAction = gameRoom.LastAction,
+                GameOn = gameRoom.GameOn
+            });
         }
 
         [HttpPost]
@@ -127,6 +134,7 @@ namespace Battleships_MBernacki.Controllers
 
             return Ok(new RoomstateInfo() {
                 RoomID = gameRoom.RoomID,
+                OponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2],
                 AskingPlayerTurn = gameRoom.IsPlayerTurn(query.PlayerKey),
                 LastAction = gameRoom.LastAction,
                 GameOn = gameRoom.GameOn
@@ -152,6 +160,7 @@ namespace Battleships_MBernacki.Controllers
             return Ok(new RoomstateInfo()
             {
                 RoomID = gameRoom.RoomID,
+                OponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2],
                 AskingPlayerTurn = gameRoom.IsPlayerTurn(shootInfo.PlayerKey),
                 LastAction = gameRoom.LastAction,
                 GameOn = gameRoom.GameOn
