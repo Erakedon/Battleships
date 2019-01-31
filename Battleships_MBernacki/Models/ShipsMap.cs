@@ -93,7 +93,8 @@ namespace Battleships_MBernacki.Models
                 }
             }
 
-
+            //for (int i = 0; i < ShipsToFound.Length; i++)
+            //    if (ShipsToFound[i] > 0) return false;
 
 
             return true;

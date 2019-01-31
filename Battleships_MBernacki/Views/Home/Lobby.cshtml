@@ -9,13 +9,13 @@
 
     <label class="inputName">Room name</label>
     <input type="text" id="roomNameInput" />
-    <label id="roomNameErrorLabel" class="errorLabel">Label mutherfucker</label>
+    <label id="roomNameErrorLabel" class="errorLabel"></label>
 
     <label class="inputName">Password (optional)</label>
     <input type="text" id="roomPasswordInput" />
 
     <div class="buttonHolder">
-        <button onclick="submitCreateRoom()">Create</button>
+        <button id="CreateRoomSubmit" onclick="submitCreateRoom()">Create</button>
         <button onclick="togglePopUp('#RoomCreatePopUp')">Cancel</button>
     </div>
 </div>
@@ -40,8 +40,9 @@
 
 <div id="lobby" class="flexContainer">
     <div id="lobbyHeader">
-        <button onclick="togglePopUp('#RoomCreatePopUp')">Create New Room</button>
-        <button onclick="updateRoomList('#roomList')">Refresh</button>
+        <h2 id="lobbyheader">Lobby</h2>
+        <button id="createRoomBtn" onclick="togglePopUp('#RoomCreatePopUp')">Create New Room</button>
+        <button id="updateRoomsBtn" onclick="updateRoomList('#roomList')">Refresh</button>
 
 
     </div>
