@@ -1,36 +1,17 @@
 ﻿using Battleships_MBernacki.Models;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Battleships_MBernacki.UnitTests
 {
+
     [TestFixture]
     class ShipsMapTests
     {
-        //ShipsMapTests _shipsMap;
-
-        //short _mapSize;
-        //short[] _shipList;
-
-        //short[][] _properMap;
-        //short[][] _badMap1;
-
-        //short[][] _map2x2;
-        //short[][] _map3x3;
-        //short[][] _map4x4;
-        //short[][] _map5x5;
-
-        //[SetUp]
-        //public void Setup()
-        //{
-        //    _map2x2 = new short[][] { new short[] { 0, 0 },
-        //                              new short[] { 0, 0 } };
-
-        //}
-
-        readonly short[][][] map =
+        readonly short[][][] maps =
         {
             new short[][] { new short[] { 1, 0 },
                             new short[] { 1, 0 } },
@@ -41,44 +22,91 @@ namespace Battleships_MBernacki.UnitTests
 
             new short[][] { new short[] { 1, 0, 1, 1 },
                             new short[] { 1, 0, 0, 0 },
-                            new short[] { 1, 0, 1, 0 },
-                            new short[] { 1, 0, 1, 0 }}
+                            new short[] { 1, 0, 0, 0 },
+                            new short[] { 0, 0, 1, 1 }},
+
+            new short[][] { new short[] { 1, 0, 1, 1, 1 },
+                            new short[] { 1, 0, 0, 0, 0 },
+                            new short[] { 1, 0, 1, 1, 1 },
+                            new short[] { 0, 0, 0, 0, 0 },
+                            new short[] { 0, 1, 1, 1, 1 }}
 
         };
 
-        static short[] mapSizes =
+        static short[] mapSizes = new short[]
         {
-            2, 3, 4
+            2, 3, 4, 5
         };
 
         static short[][] shipsLists =
         {
             new short[] { 0, 1, 0, 0},
             new short[] { 0, 1, 1, 0},
-            new short[] { 0, 2, 0, 1}
+            new short[] { 0, 2, 1, 0},
+            new short[] { 0, 0, 3, 1}
         };
 
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void ValidateMap_SetsProperMapMapSizeAndShipList_ReturnsTrue(int id)
+        {
+            ShipsMap shipsMap = new ShipsMap(maps[id], mapSizes[id], shipsLists[id]);
+            bool result = shipsMap.ValidateMap();
+            Assert.True(result);
+        }
 
-        //[Test]
-        ////[TestCaseSource("maps", "mapSizes", "shipsLists")]
-        ////[TestCase(arg1: _map2x2, arg2: _mapSize, arg3: _shipList)]
-        //[TestCase(
-        //    new short[][] { new short[] { 1, 0 }, new short[] { 1, 0 } },
-        //    2, 
-        //    new short[] { 0, 1, 0, 0 })]
-        //public void ValidateMap_SetsProperMapMapSizeAndShipList(short[][] map, short mapSize, short[] shipsList)
-        //{
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void ValidateMap_SetsProperMapAndMapSizeAndWrongShipList_ReturnsFalse(int id)
+        {
+            short[] wrongShipList = { 3, 3, 3, 3 };
 
-        //}
+            ShipsMap shipsMap = new ShipsMap(maps[id], mapSizes[id], wrongShipList);
+            bool result = shipsMap.ValidateMap();
+            Assert.False(result);
+        }
 
-        //[Test]
-        //public void Test(
-        //[Values(map[0],map[1],map[2])]    short[][] map, 
-        //    short mapSize, 
-        //    short[] shipsList)
-        //{
+        [Test]
+        public void ValidateMap_SetsProperMapAndShipListAndWrongMapSize_ReturnsFalse(
+           [Values(0,1,2,3)] int id, [Values(-5, 1, 0, 20)] short mapSize)
+        {
 
-        //}
+            ShipsMap shipsMap = new ShipsMap(maps[id], mapSize, shipsLists[id]);
+            bool result = shipsMap.ValidateMap();
+            Assert.False(result);
+        }
+
+        [Test]
+        [TestCase(0,1,0)]
+        [TestCase(1,2,2)]
+        public void Shoot_SetsCoordinatesOnShip_ReturnHitString(int id, int x, int y)
+        {
+
+            ShipsMap shipsMap = new ShipsMap(maps[id], mapSizes[id], shipsLists[id]);
+            shipsMap.ValidateMap();
+            string result = shipsMap.Shoot(x,y);
+            Assert.AreEqual("hit",result);
+        }
+
+        [Test]
+        [TestCase(0, 1, 1)]
+        [TestCase(1, 2, 0)]
+        public void Shoot_SetsCoordinatesOnBlank_ReturnMissString(int id, int x, int y)
+        {
+
+            ShipsMap shipsMap = new ShipsMap(maps[id], mapSizes[id], shipsLists[id]);
+            shipsMap.ValidateMap();
+            string result = shipsMap.Shoot(x, y);
+            Assert.AreEqual("miss", result);
+        }
+
+
 
 
     }

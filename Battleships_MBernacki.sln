@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships_MBernacki", "Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships_MBernacki.UnitTests", "Battleships_MBernacki.UnitTests\Battleships_MBernacki.UnitTests.csproj", "{339DF17B-9414-47BD-A274-82EA0AA5407E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships_MBernacki.SeleniumTests", "Battleships_MBernacki.SeleniumTests\Battleships_MBernacki.SeleniumTests.csproj", "{06137B19-FB8B-45B7-9172-D75417D1A42E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{339DF17B-9414-47BD-A274-82EA0AA5407E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{339DF17B-9414-47BD-A274-82EA0AA5407E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{339DF17B-9414-47BD-A274-82EA0AA5407E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06137B19-FB8B-45B7-9172-D75417D1A42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06137B19-FB8B-45B7-9172-D75417D1A42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06137B19-FB8B-45B7-9172-D75417D1A42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06137B19-FB8B-45B7-9172-D75417D1A42E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
