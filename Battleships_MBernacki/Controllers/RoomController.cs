@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Battleships_MBernacki.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+//using System.Security.Claims;
 
 namespace Battleships_MBernacki.Controllers
 {
@@ -26,9 +28,12 @@ namespace Battleships_MBernacki.Controllers
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
+        //[Authorize]
         public IActionResult CreateRoom([FromBody] RoomCreation roomCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
 
             string password;
             if (roomCreation.Password == null) password = "";
