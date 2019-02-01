@@ -11,9 +11,9 @@ namespace Battleships_MBernacki.Models
     {
         public int RoomID { get; set; }
         public string RoomName { get; set; }
-        private List<int> RoomPlayersKeys { get; set; } = new List<int>(2);
-        public List<string> PlayersNames { get; set; } = new List<string>(2);
-        private List<ShipsMap> Maps { get; set; } = new List<ShipsMap>(2);
+        private List<int> RoomPlayersKeys { get; set; }
+        public List<string> PlayersNames { get; set; }
+        private List<ShipsMap> Maps { get; set; }
         public short MapSize { get; }
         public short[] ShipList { get; }
         //private string Password { get; set; }
@@ -35,6 +35,10 @@ namespace Battleships_MBernacki.Models
             //else RequirePassword = true;
 
             CurrentPlayerTurn = 0;
+
+            RoomPlayersKeys = new List<int>(2);
+            PlayersNames = new List<string>(2);
+            Maps = new List<ShipsMap>(2);
         }
 
         public int AddPlayer(string name)

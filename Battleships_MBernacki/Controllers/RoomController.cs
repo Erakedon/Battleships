@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Battleships_MBernacki.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-//using System.Security.Claims;
+using System.Security.Claims;
+using Battleships_MBernacki.Areas.Identity.Data;
 
 namespace Battleships_MBernacki.Controllers
 {
@@ -15,21 +17,25 @@ namespace Battleships_MBernacki.Controllers
     public class RoomController : ControllerBase
     {
         private IGameRooms<GameRoom> _gameRooms { get; set; }
+        private readonly UserManager<Battleships_MBernackiUser> _userManager;
 
-        public RoomController(IGameRooms<GameRoom> gameRooms)
+        public RoomController(
+            IGameRooms<GameRoom> gameRooms,
+            UserManager<Battleships_MBernackiUser> userManager)
         {
             _gameRooms = gameRooms;
+            _userManager = userManager;
         }
 
-        //private List<GameRoom> RoomList { get; set; } = new List<GameRoom>();
+        private Task<Battleships_MBernackiUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
 
 
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
-        //[Authorize]
-        public IActionResult CreateRoom([FromBody] RoomCreation roomCreation)
+        [Authorize]
+        public async Task<IActionResult> CreateRoom([FromBody] RoomCreation roomCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -42,7 +48,10 @@ namespace Battleships_MBernacki.Controllers
             short[] shipList = new short[] { 0, 2, 1, 1 };//Index + 1 is the indicator of ship size
             short mapSize = 6;
             GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password,mapSize,shipList);
-            int playerRoomKey = newGameRoom.AddPlayer(roomCreation.PlayerName);
+
+            Battleships_MBernackiUser user = await GetCurrentUserAsync();
+
+            int playerRoomKey = newGameRoom.AddPlayer(user.UserName);
 
             //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
             //var newGameRoom = RoomList.Last<GameRoom>();
@@ -61,6 +70,7 @@ namespace Battleships_MBernacki.Controllers
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
+        [Authorize]
         public IActionResult JoinRoom([FromBody] RoomJoin roomJoin)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -93,6 +103,7 @@ namespace Battleships_MBernacki.Controllers
         [HttpGet]
         [Route("[action]")]
         [Produces("application/json")]
+        //[Authorize]
         public IActionResult GetRoomList()
         {
             List<RoomInfo> avalibleRooms = new List<RoomInfo>();
@@ -114,6 +125,7 @@ namespace Battleships_MBernacki.Controllers
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
+        [Authorize]
         public IActionResult PostMap([FromBody] MapSend mapInfo)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -147,6 +159,7 @@ namespace Battleships_MBernacki.Controllers
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
+        [Authorize]
         public IActionResult Gamestate([FromBody] GamestateQuery query)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -173,6 +186,7 @@ namespace Battleships_MBernacki.Controllers
         [HttpPost]
         [Route("[action]")]
         [Produces("application/json")]
+        [Authorize]
         public IActionResult Shoot([FromBody] PlayerShootInfo shootInfo)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
