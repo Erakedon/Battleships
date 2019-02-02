@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Battleships_MBernacki.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Battleships_MBernacki.Controllers
 {
@@ -15,12 +16,14 @@ namespace Battleships_MBernacki.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Lobby()
         {
             return View();
         }
 
         //[FromRoute("/roomId")]
+        [Authorize]
         public IActionResult GameRoom(int id)
         {
             ViewData["RoomId"] = id;

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Security.Cryptography;
 using Battleships_MBernacki.Models.Interfaces;
 using System.Threading.Tasks;
+using System.Timers;
+//using System.Threading;
 
 namespace Battleships_MBernacki.Models
 {
     public class GameRooms : IGameRooms<GameRoom>
     {
         public List<GameRoom> GameRoomsList { get; set; }
-        //private static RNGCryptoServiceProvider RngCsp = new RNGCryptoServiceProvider();
-
+        private Queue<Timer> Timers;
 
 
         public GameRooms()
@@ -37,5 +38,19 @@ namespace Battleships_MBernacki.Models
             } while (sameId);
             return newId;
         }
+
+
+        public void RemoveFinishedRooms()
+        {
+            for (int i = 0; i < GameRoomsList.Count(); i++)
+            {
+                if (GameRoomsList[i].DeleteTime > DateTime.MinValue && GameRoomsList[i].DeleteTime < DateTime.Now)
+                    GameRoomsList.RemoveAt(i);
+            }
+        }
+        
+        
+
+
     }
 }

@@ -39,8 +39,6 @@ namespace Battleships_MBernacki.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-
-
             string password;
             if (roomCreation.Password == null) password = "";
             else password = roomCreation.Password;
@@ -51,7 +49,7 @@ namespace Battleships_MBernacki.Controllers
 
             Battleships_MBernackiUser user = await GetCurrentUserAsync();
 
-            int playerRoomKey = newGameRoom.AddPlayer(user.UserName);
+            int playerRoomKey = newGameRoom.AddPlayer(user.UserName, user.Id);
 
             //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
             //var newGameRoom = RoomList.Last<GameRoom>();
@@ -71,7 +69,7 @@ namespace Battleships_MBernacki.Controllers
         [Route("[action]")]
         [Produces("application/json")]
         [Authorize]
-        public IActionResult JoinRoom([FromBody] RoomJoin roomJoin)
+        public async Task<IActionResult> JoinRoom([FromBody] RoomJoin roomJoin)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -80,15 +78,12 @@ namespace Battleships_MBernacki.Controllers
             if (gameRoom == null) return NotFound("Game room could not be found");
             if (gameRoom.IsRoomFull()) return NotFound("Game room is full");
             //if (gameRoom.RequirePassword  && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
-            int playerRoomKey;
-            try
-            {
-                playerRoomKey = gameRoom.AddPlayer(roomJoin.PlayerName);
-            }
-            catch
-            {
-                return BadRequest("Wrong Player Key");
-            }
+            //int playerRoomKey;
+
+            Battleships_MBernackiUser user = await GetCurrentUserAsync();
+
+
+            int playerRoomKey = gameRoom.AddPlayer(user.UserName, user.Id);
 
             return Ok(new JoinedRoomInfo() {
                 PlayerRoomKey = playerRoomKey,
@@ -107,6 +102,7 @@ namespace Battleships_MBernacki.Controllers
         public IActionResult GetRoomList()
         {
             List<RoomInfo> avalibleRooms = new List<RoomInfo>();
+            _gameRooms.RemoveFinishedRooms();
             _gameRooms.GameRoomsList.ForEach(room =>
             {
                 if (!room.IsRoomFull())
@@ -198,9 +194,14 @@ namespace Battleships_MBernacki.Controllers
             var playerRoomId = gameRoom.GetPlayerRoomId(shootInfo.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
 
-            if(!gameRoom.GameOn) return BadRequest("Players did nit sets theirs maps yet");
+            if(!gameRoom.GameOn) return BadRequest("Players did not sets theirs maps yet");
 
             string result = gameRoom.PlayerShootReq(shootInfo.PlayerKey, shootInfo.X, shootInfo.Y);
+
+            //if (result == "hit")
+            //{
+            //    _gameRooms.ResolveRoom(gameRoom.RoomID);
+            //}
 
             return Ok(new RoomstateInfo()
             {

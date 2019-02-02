@@ -53,7 +53,7 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddPlayer_PassesCorrectName_MethodReturnsNonNegativeInt()
         {
-            int result = _gameRoom.AddPlayer("Nickname");
+            int result = _gameRoom.AddPlayer("Nickname","testId");
 
             Assert.Positive(result);
         }
@@ -61,8 +61,8 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddPlayer_AddsTwoPlayers_OutputsAreNotTheSame()
         {
-            int result1 = _gameRoom.AddPlayer("Nickname1");
-            int result2 = _gameRoom.AddPlayer("Nickname2");
+            int result1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int result2 = _gameRoom.AddPlayer("Nickname2", "testId");
 
             Assert.AreNotEqual(result1, result2);
         }
@@ -70,11 +70,11 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddPlayer_AddsThreePlayers_ThrowsExceptionAtThirdTime()
         {
-            int result1 = _gameRoom.AddPlayer("Nickname1");
-            int result2 = _gameRoom.AddPlayer("Nickname2");
+            int result1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int result2 = _gameRoom.AddPlayer("Nickname2", "testId");
             try
             {
-                int result3 = _gameRoom.AddPlayer("Nickname3");
+                int result3 = _gameRoom.AddPlayer("Nickname3", "testId");
             }
             catch
             {
@@ -86,8 +86,8 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void GetPlayerRoomId_AddsTwoPlayersAndGetsIdOfFirst_RoomIdOfFirstEqualsZero()
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
 
             int result = _gameRoom.GetPlayerRoomId(id1);
 
@@ -97,8 +97,8 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void GetPlayerRoomId_AddsTwoPlayersAndGetsIdOfSecond_RoomIdOfSecondEqualsOne()
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
 
             int result = _gameRoom.GetPlayerRoomId(id2);
 
@@ -109,7 +109,7 @@ namespace Battleships_MBernacki.UnitTests
         public void GetPlayerRoomId_AddsOnePlayerPassesRandomId_ReturnsMinusOne(
             [Random(1000000, 9999999, 5)] int id)
         {
-            _gameRoom.AddPlayer("Nickname1");            
+            _gameRoom.AddPlayer("Nickname1", "testId");            
 
             int result = _gameRoom.GetPlayerRoomId(id);
 
@@ -120,8 +120,8 @@ namespace Battleships_MBernacki.UnitTests
         public void GetPlayerRoomId_AddsTwoPlayersPassesRandomId_ReturnsMinusOne(
             [Random(1000000, 9999999, 5)] int id)
         {
-            _gameRoom.AddPlayer("Nickname1");
-            _gameRoom.AddPlayer("Nickname2");
+            _gameRoom.AddPlayer("Nickname1", "testId");
+            _gameRoom.AddPlayer("Nickname2", "testId");
 
             int result = _gameRoom.GetPlayerRoomId(id);
 
@@ -139,7 +139,7 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void IsRoomFull_AddOnePlayer_ReturnFalse()
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
 
             bool result = _gameRoom.IsRoomFull();
 
@@ -149,8 +149,8 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void IsRoomFull_AddTwoPlayers_ReturnFalse()
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
 
             bool result = _gameRoom.IsRoomFull();
 
@@ -169,7 +169,7 @@ namespace Battleships_MBernacki.UnitTests
         public void AddMap_AddsPlayerPassesRandomPlayerIdAndCorrectMap_ReturnsFalse(
             [Random(1000000, 9999999, 5)] int id)
         {
-            _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddPlayer("Nickname1", "testId");
             bool result = _gameRoom.AddMap(id, _properMap1);
             Assert.False(result);
         }
@@ -178,8 +178,8 @@ namespace Battleships_MBernacki.UnitTests
         public void AddMap_AddsTwoPlayersPassesRandomPlayerIdAndCorrectMap_ReturnsFalse(
             [Random(1000000, 9999999, 5)] int id)
         {
-            _gameRoom.AddPlayer("Nickname1");
-            _gameRoom.AddPlayer("Nickname1");
+            _gameRoom.AddPlayer("Nickname1", "testId");
+            _gameRoom.AddPlayer("Nickname1", "testId");
 
             bool result = _gameRoom.AddMap(id, _properMap1);
             Assert.False(result);
@@ -188,7 +188,7 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddMap_AddsPlayerPassesCorrectIdAndBadMap_ReturnsFalse()
         {
-            int id = _gameRoom.AddPlayer("Nickname1");
+            int id = _gameRoom.AddPlayer("Nickname1", "testId");
             bool result = _gameRoom.AddMap(id, _badMap1);
             Assert.False(result);
         }
@@ -196,7 +196,7 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddMap_AddsPlayerPassesCorrectIdAndCorrectMap_ReturnsTrue()
         {
-            int id = _gameRoom.AddPlayer("Nickname1");
+            int id = _gameRoom.AddPlayer("Nickname1", "testId");
             bool result = _gameRoom.AddMap(id, _properMap1);
             Assert.True(result);
         }
@@ -204,7 +204,7 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddMap_OnePlayerAddsMap_GameOnValueIsFalse()
         {
-            int id = _gameRoom.AddPlayer("Nickname1");
+            int id = _gameRoom.AddPlayer("Nickname1", "testId");
             _gameRoom.AddMap(id, _properMap1);
 
             bool result = _gameRoom.GameOn;
@@ -215,9 +215,9 @@ namespace Battleships_MBernacki.UnitTests
         [Test]
         public void AddMap_TwoPlayersCorrectMaps_GameOnValueIsTrue()
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
             _gameRoom.AddMap(id1, _properMap1);
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
             _gameRoom.AddMap(id2, _properMap2);
 
             bool result = _gameRoom.GameOn;
@@ -230,7 +230,7 @@ namespace Battleships_MBernacki.UnitTests
             [Values(0, 1, 2)] int x,
             [Values(0, 1, 2)] int y)
         {
-            int id = _gameRoom.AddPlayer("Nickname1");
+            int id = _gameRoom.AddPlayer("Nickname1", "testId");
 
             string result = _gameRoom.PlayerShootReq(id, x, y);
 
@@ -243,7 +243,7 @@ namespace Battleships_MBernacki.UnitTests
             [Values(0, 1, 2)] int x,
             [Values(0, 1, 2)] int y)
         {
-            int id = _gameRoom.AddPlayer("Nickname1");
+            int id = _gameRoom.AddPlayer("Nickname1", "testId");
             _gameRoom.AddMap(id, _properMap1);
 
             string result = _gameRoom.PlayerShootReq(id, x, y);
@@ -256,8 +256,8 @@ namespace Battleships_MBernacki.UnitTests
             [Values(-5, -1, 5, 12)] int x,
             [Values(-5, -1, 5, 12)] int y)
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
             _gameRoom.AddMap(id1, _properMap1);
             _gameRoom.AddMap(id2, _properMap2);
 
@@ -271,8 +271,8 @@ namespace Battleships_MBernacki.UnitTests
             [Values(0, 1, 2)] int x,
             [Values(0, 1, 2)] int y)
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
             _gameRoom.AddMap(id1, _properMap1);
             _gameRoom.AddMap(id2, _properMap2);
 
@@ -286,8 +286,8 @@ namespace Battleships_MBernacki.UnitTests
             [Values(0, 1, 2)] int x,
             [Values(0, 1, 2)] int y)
         {
-            int id1 = _gameRoom.AddPlayer("Nickname1");
-            int id2 = _gameRoom.AddPlayer("Nickname2");
+            int id1 = _gameRoom.AddPlayer("Nickname1", "testId");
+            int id2 = _gameRoom.AddPlayer("Nickname2", "testId");
             _gameRoom.AddMap(id1, _properMap1);
             _gameRoom.AddMap(id2, _properMap2);
 

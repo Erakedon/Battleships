@@ -53,16 +53,22 @@
             if (data.oponentName == "") this.oponentNameDiv.innerText = "Waiting for oponent";
             else this.oponentNameDiv.innerText = "Oponent: " + data.oponentName;
 
-            if (data.gameOn) {
+            console.log(data);
+            if (data.lastAction && data.lastAction.result == "win") {
+                this.gameStateDiv.innerText = data.lastAction.playerName + " have won!";
+            }
+            else if (data.gameOn) {
                 if (data.askingPlayerTurn) {
                     this.gameStateDiv.innerText = "Your Turn!";
                     this.oponentMap.enableMove();
-                } else {
+                }
+                else {
                     this.gameStateDiv.innerText = "Waiting for oponent";
                     setTimeout(() => { this.watchForTurn() }, 2000);
                 }
 
-            } else {
+            }
+            else {
                 this.gameStateDiv.innerText = "Waiting for oponent";
                 setTimeout(() => { this.watchForTurn() }, 2000);
             }

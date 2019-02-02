@@ -13,7 +13,8 @@ namespace Battleships_MBernacki.Models
         public string RoomName { get; set; }
         private List<int> RoomPlayersKeys { get; set; }
         public List<string> PlayersNames { get; set; }
-        private List<ShipsMap> Maps { get; set; }
+        public List<string> PlayerDatabaseId { get; set; }
+        private ShipsMap[] Maps { get; set; }
         public short MapSize { get; }
         public short[] ShipList { get; }
         //private string Password { get; set; }
@@ -22,7 +23,8 @@ namespace Battleships_MBernacki.Models
         public int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
         public PlayerAction LastAction { get; set; }
         public bool GameOn { get; set; } = false;//True if both players set their maps
-        
+        public DateTime DeleteTime { get; set; }
+
 
         public GameRoom(int roomID, string roomName, string password, short mapsize, short[] shipList)
         {
@@ -38,10 +40,11 @@ namespace Battleships_MBernacki.Models
 
             RoomPlayersKeys = new List<int>(2);
             PlayersNames = new List<string>(2);
-            Maps = new List<ShipsMap>(2);
+            PlayerDatabaseId = new List<string>(2);
+            Maps = new ShipsMap[2];
         }
 
-        public int AddPlayer(string name)
+        public int AddPlayer(string name, string databaseId)
         {
             if (IsRoomFull())
             {
@@ -49,6 +52,7 @@ namespace Battleships_MBernacki.Models
             }
 
             PlayersNames.Add(name);
+            PlayerDatabaseId.Add(databaseId);
             
             Random random = new System.Random();
             int playerSecretKey = random.GetHashCode();
@@ -100,10 +104,14 @@ namespace Battleships_MBernacki.Models
 
             ShipsMap shipsMap = new ShipsMap(map, MapSize, ShipList);
             if (!shipsMap.ValidateMap()) return false;
-            
-            Maps.Insert(playerId, shipsMap);
 
-            if (Maps.Count == 2) GameOn = true;
+            //Maps.Insert(playerId, shipsMap);
+
+            //if (Maps.Count == 2) GameOn = true;
+
+            Maps[playerId] = shipsMap;
+
+            if (Maps[0] != null && Maps[1] != null) GameOn = true;
 
             return true;
         }
@@ -123,8 +131,9 @@ namespace Battleships_MBernacki.Models
             {
                 GameOn = false;
                 playerWon = true;
+                GameResolve();
             }
-            LastAction = new PlayerAction() { PlayerId = playerId, Result = result, X = x, Y = y, GameWinner = playerWon };
+            LastAction = new PlayerAction() { PlayerId = playerId, PlayerName = PlayersNames[playerId], Result = result, X = x, Y = y, GameWinner = playerWon };
             CurrentPlayerTurn = (CurrentPlayerTurn + 1) % 2;
 
             return result;
@@ -133,6 +142,11 @@ namespace Battleships_MBernacki.Models
         public bool IsPlayerTurn(int playerKey)
         {
             return GetPlayerRoomId(playerKey) == CurrentPlayerTurn;
+        }
+
+        private void GameResolve()
+        {
+            DeleteTime = DateTime.Now.AddMinutes(1);
         }
 
     }

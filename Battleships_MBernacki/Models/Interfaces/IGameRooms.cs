@@ -10,5 +10,6 @@ namespace Battleships_MBernacki.Models
         List<T> GameRoomsList { get; set; }
 
         int GenerateRoomId();
+        void RemoveFinishedRooms();
     }
 }
