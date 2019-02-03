@@ -39,13 +39,13 @@ namespace Battleships_MBernacki.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            string password;
-            if (roomCreation.Password == null) password = "";
-            else password = roomCreation.Password;
+            //string password;
+            //if (roomCreation.Password == null) password = "";
+            //else password = roomCreation.Password;
 
-            short[] shipList = new short[] { 0, 2, 1, 1 };//Index + 1 is the indicator of ship size
+            short[] shipList = new short[] { 0, 2, 0, 0 };//Index + 1 is the indicator of ship size
             short mapSize = 6;
-            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName, password,mapSize,shipList);
+            GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName,mapSize,shipList);
 
             Battleships_MBernackiUser user = await GetCurrentUserAsync();
 
@@ -111,7 +111,6 @@ namespace Battleships_MBernacki.Controllers
                         RoomID = room.RoomID,
                         OwnerName = room.PlayersNames[0],
                         RoomName = room.RoomName,
-                        RequirePassword = false
                     });
             });
 

@@ -24,7 +24,7 @@
 
 function submitCreateRoom() {
     let nameInput = document.querySelector("#roomNameInput"); 
-    let passwordInput = document.querySelector("#roomPasswordInput"); 
+    //let passwordInput = document.querySelector("#roomPasswordInput"); 
     let errLabel = document.querySelector("#roomNameErrorLabel");
 
     errLabel.textContent = "";
@@ -33,8 +33,8 @@ function submitCreateRoom() {
         errLabel.textContent += "Room name cannot be blank";
     }
     else {
-        let password = passwordInput.value || "";
-        createNewRoom(nameInput.value, password);
+        //let password = passwordInput.value || "";
+        createNewRoom(nameInput.value);
         //window.location.href = ('/home/gameroom/' + data.roomID);
     }
     
@@ -54,7 +54,7 @@ function togglePopUp(popUpId) {
 //    //if (!userNickname) window.location.href = ('/home/index/');
 //}
 
-function createNewRoom(roomname, roomPassword) {
+function createNewRoom(roomname) {
     //let userNickname = JSON.parse(localStorage.getItem('userNickname'));
     //if (!userNickname) window.location.href = ('/home/index/');
 
@@ -62,7 +62,7 @@ function createNewRoom(roomname, roomPassword) {
     {
         roomName: roomname,
         //playername: userNickname,
-        password: roomPassword
+        //password: roomPassword
     }
     
     var options = {};
@@ -81,7 +81,7 @@ function createNewRoom(roomname, roomPassword) {
     $.ajax(options);    
 }
 
-function joinRoom(roomId, roomPassword) {
+function joinRoom(roomId) {
     //console.log("joinRoom");
     //let userNickname = JSON.parse(localStorage.getItem('userNickname'));
     //if (!userNickname) window.location.href = ('/home/index/');
@@ -90,7 +90,7 @@ function joinRoom(roomId, roomPassword) {
     {
         roomId: roomId,
         //playername: userNickname,
-        password: roomPassword
+        //password: roomPassword
     }
 
     var options = {};
@@ -156,7 +156,7 @@ function updateRoomList(divToPassList) {
                     roomDiv.onclick = () => { togglePopUp(RoomPasswordPopUp) }
                 }
                 else {
-                    roomDiv.onclick = () => { joinRoom(element.roomID, ""); };
+                    roomDiv.onclick = () => { joinRoom(element.roomID); };
                 }
 
                 document.querySelector(divToPassList).appendChild(roomDiv);

@@ -26,7 +26,7 @@ namespace Battleships_MBernacki.Models
         public DateTime DeleteTime { get; set; }
 
 
-        public GameRoom(int roomID, string roomName, string password, short mapsize, short[] shipList)
+        public GameRoom(int roomID, string roomName, short mapsize, short[] shipList)
         {
             RoomID = roomID;
             RoomName = roomName;

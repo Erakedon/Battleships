@@ -20,8 +20,8 @@
 
         this.gameRoomNameDiv.innerText = this.roomData.roomName;
 
-        this.mapSize = 6,
-        this.shipsList = [0, 2, 1, 1], //Index + 1 is the indicator of ship size
+        this.mapSize = this.roomData.mapSize,
+            this.shipsList = this.roomData.shipsList, //Index + 1 is the indicator of ship size
 
         this.playerMap = new PlayerMap("#playerMap", this.mapSize, this.shipsList,this);
         this.playerMap.generateMap();
@@ -73,14 +73,11 @@
                 setTimeout(() => { this.watchForTurn() }, 2000);
             }
 
-
         };
         options.error = (err) => {
             console.log(err);
         };
         $.ajax(options);
-
-
     }
 
 
