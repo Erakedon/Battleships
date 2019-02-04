@@ -19,7 +19,7 @@
         let result = true;
         this.shipsLeft.forEach(s => {
             console.log("ships left",s);
-            if (s > 0) result = false;
+            if (s != 0) result = false;
         });
         return result;
     }
@@ -30,14 +30,15 @@
 
         this.findBlank();
         this.updateDOMMap();
+        this.gameplay.updateShipsListDiv(this.shipsLeft);
         if (this.allShipsPlaced()) {
             console.log("All ships placed!");
             this.setMapForGameplay();
+            this.gameplay.hideShipsListDiv();
+            this.gameplay.oponentMap.showMap();
             this.sendMap();
         }
     }
-
-
 
     setMapForGameplay() {
         for (let i = 0; i < this.mapSize; i++) {
@@ -81,6 +82,7 @@
         };
         options.error = (err) => {
             console.log(err);
+            window.location.href = ('/home/lobby/' + roomData.roomID);
         };
         $.ajax(options);
 

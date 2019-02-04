@@ -33,21 +33,20 @@
 
             switch (data.lastAction.result) {
                 case "win":
+                    this.mapTokens[data.lastAction.x][data.lastAction.y] = 1;
                     break;
                 case "hit":
                     this.mapTokens[data.lastAction.x][data.lastAction.y] = 1;
-                    this.mapDOMRef[data.lastAction.x][data.lastAction.y].classList.add("ship");
                     break;
                 case "miss":
                     this.mapTokens[data.lastAction.x][data.lastAction.y] = -1;
-                    this.mapDOMRef[data.lastAction.x][data.lastAction.y].classList.add("miss");
                     break
 
                 default:
                     break;
             }
             this.findBlank();
-
+            this.updateDOMMap();
 
             this.gameplay.watchForTurn();
         };
@@ -67,7 +66,14 @@
               
             }
         }
+    }
 
+    hideMap() {
+        document.querySelector(this.containerId).style.display = "none";
+    }
+
+    showMap() {
+        document.querySelector(this.containerId).style.display = "block";
     }
 
 }

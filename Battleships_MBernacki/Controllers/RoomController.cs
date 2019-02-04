@@ -39,12 +39,30 @@ namespace Battleships_MBernacki.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            //string password;
-            //if (roomCreation.Password == null) password = "";
-            //else password = roomCreation.Password;
-
-            short[] shipList = new short[] { 0, 2, 0, 0 };//Index + 1 is the indicator of ship size
             short mapSize = 6;
+            short[] shipList = new short[] { 0, 2, 0, 0 };
+
+
+            if (roomCreation.MapSize != null && roomCreation.MapSize >= 3 && roomCreation.MapSize <= 8)
+                mapSize = roomCreation.MapSize;
+
+            bool flag = true;
+
+            if (roomCreation.ShipsList.Length != 4)
+                flag = false;
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (roomCreation.ShipsList[i] < 0 || roomCreation.ShipsList[i] > 4)
+                        flag = false;
+                }
+            }
+
+            if (flag)
+                shipList = roomCreation.ShipsList;
+
+
             GameRoom newGameRoom = new GameRoom(_gameRooms.GenerateRoomId(), roomCreation.RoomName,mapSize,shipList);
 
             Battleships_MBernackiUser user = await GetCurrentUserAsync();
@@ -131,7 +149,7 @@ namespace Battleships_MBernacki.Controllers
 
             var playerRoomId = gameRoom.GetPlayerRoomId(mapInfo.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
-
+            if(gameRoom.GameOn) return BadRequest("Map is already set");
             //var shipsMap = new ShipsMap(mapInfo.Map,gameRoom.MapSize,gameRoom.ShipList);
             bool isMapOk = gameRoom.AddMap(mapInfo.PlayerKey, mapInfo.Map);
             if(!isMapOk) return BadRequest("Map is not correct");

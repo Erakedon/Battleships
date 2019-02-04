@@ -62,6 +62,8 @@ namespace Battleships_MBernacki.Models
 
                         int syNeg = FindInDirection(i, j - 1, 0, -1);
                         int syPos = FindInDirection(i, j + 1, 0, 1);
+
+                        if (sxNeg + sxPos + syNeg + syPos > ShipsToFound.Length - 1) return false;
                         
                         if (sxNeg + sxPos > 0)
                         {
@@ -88,7 +90,7 @@ namespace Battleships_MBernacki.Models
                                 y--;
                             }
                             break;
-                        }
+                        } else ShipPartsLeft.Add(new int[] { i, j });
                     }
                 }
             }

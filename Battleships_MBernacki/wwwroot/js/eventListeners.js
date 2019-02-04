@@ -1,30 +1,6 @@
 ﻿
-
-//function submitNickname() {
-
-//    let input = document.querySelector("#nicknameInput");
-//    let errLabel = document.querySelector("#nicknameErrorLabel");
-
-//    errLabel.textContent = "";
-
-//    if (input.value.length < 3) {
-//        errLabel.textContent += "Nickname mus have at least 3 haracters";
-//        return;
-//    }
-
-//    let userNickname = input.value;
-
-//    localStorage.setItem('userNickname', JSON.stringify(userNickname));
-
-//    console.log("Nickname submitted: " + userNickname);
-
-//    //window.location.href = '@Url.Action("Lobby", "Home")' + '/';
-//    window.location.href = ('/home/lobby/');
-//}
-
 function submitCreateRoom() {
     let nameInput = document.querySelector("#roomNameInput"); 
-    //let passwordInput = document.querySelector("#roomPasswordInput"); 
     let errLabel = document.querySelector("#roomNameErrorLabel");
 
     errLabel.textContent = "";
@@ -33,9 +9,7 @@ function submitCreateRoom() {
         errLabel.textContent += "Room name cannot be blank";
     }
     else {
-        //let password = passwordInput.value || "";
         createNewRoom(nameInput.value);
-        //window.location.href = ('/home/gameroom/' + data.roomID);
     }
     
 }
@@ -47,22 +21,14 @@ function togglePopUp(popUpId) {
     else popUpEl.style.display = "none"
 }
 
-//function checkIfNicknameSet() {
-//    let userNickname = JSON.parse(localStorage.getItem('userNickname'));
-
-
-//    //if (!userNickname) window.location.href = ('/home/index/');
-//}
-
 function createNewRoom(roomname) {
-    //let userNickname = JSON.parse(localStorage.getItem('userNickname'));
-    //if (!userNickname) window.location.href = ('/home/index/');
 
     let roomCreationData =
     {
         roomName: roomname,
-        //playername: userNickname,
-        //password: roomPassword
+        mapSize: 7,
+        shipsList: [4,1,1,1]
+
     }
     
     var options = {};
@@ -82,15 +48,10 @@ function createNewRoom(roomname) {
 }
 
 function joinRoom(roomId) {
-    //console.log("joinRoom");
-    //let userNickname = JSON.parse(localStorage.getItem('userNickname'));
-    //if (!userNickname) window.location.href = ('/home/index/');
 
     let roomJoinData =
     {
-        roomId: roomId,
-        //playername: userNickname,
-        //password: roomPassword
+        roomId: roomId
     }
 
     var options = {};
@@ -105,6 +66,7 @@ function joinRoom(roomId) {
     };
     options.error = (err) => {
         console.log(err);
+        window.location.href = ('/home/lobby/' + roomData.roomID);
     };
     $.ajax(options);
 }

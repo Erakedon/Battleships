@@ -1,19 +1,10 @@
 ﻿class ShipsMap {
 
-    //mapDOMRef;
-    //mapTokens;
-    //mapSize;
-
-    //shipsLeft;
-
-
     constructor(containerId, _mapSize, shipsList) {
         this.mapDOMRef = new Array(_mapSize);
         this.containerId = containerId;
 
-        console.log(this.containerId);
         this.generateMap(this.containerId);
-        console.log(this.mapDOMRef);
 
         this.mapSize = _mapSize;
         this.shipsLeft = shipsList.slice();
@@ -32,10 +23,7 @@
 
 
     generateMap(container) {
-        //let arrayReference;
-        //if (allegiance == "oponent") arrayReference = oponentCells;
         console.log(this.containerId);
-        //else arrayReference = playerCells;
 
         for (let i = 0; i < this.mapSize; i++) {
 
@@ -47,7 +35,6 @@
             for (let j = 0; j < this.mapSize; j++) {
                 let cell = document.createElement("div");
                 cell.classList.add('cell');
-                //cell.onclick = () => { this.setShip(i,j) }
 
                 this.mapDOMRef[i][j] = cell;
 
@@ -103,10 +90,10 @@
                         }
                         if (x + 1 > 0) this.mapTokens[x][j] = -1;
                         startOver = true;
-                        break;
+                        //break;
                     }
-                    else if (syNeg + syPos == biggestShip - 1) {
-                        this.shipsLeft[biggestShip - 1] -= 1;
+                    if (syNeg + syPos == biggestShip - 1) {//
+                        if (!startOver) this.shipsLeft[biggestShip - 1] -= 1;
                         let y = j + syPos;
                         if (y + 1 < this.mapSize) this.mapTokens[i][y + 1] = -1;
                         while (y >= j - syNeg) {
@@ -115,11 +102,10 @@
                         }
                         if (y + 1 > 0) this.mapTokens[i][y] = -1;
                         startOver = true;
-                        break;
+                        //break;
                     }
-
+                    if (startOver) break;
                 }
-
             }
             if (startOver) break;
         }
@@ -127,8 +113,6 @@
     }
 
     markSlants(x, y) {
-    //console.log(this);
-    //console.log(this.this);
     if (x > 0) {
         if (y > 0) {
             this.searchedCells[x - 1][y - 1] = 1;
@@ -154,11 +138,6 @@
     findInDirection(x, y, dirX, dirY) {
     if (x < 0 || x + 1 > this.mapSize || y < 0 || y + 1 > this.mapSize) return 0;
 
-        //if (this.mapTokens[x][y] < 0 || this.searchedCells[x][y] == 1) {
-        //if (this.mapTokens[x][y] < 0) {
-        //    this.searchedCells[x][y] = 1;
-        //return 0;
-        //}
     if (this.mapTokens[x][y] == 1) {
         this.searchedCells[x][y] = 1;
         this.markSlants(x, y);
@@ -172,11 +151,6 @@
 
 
     updateDOMMap() {
-        //this.mapDOMRef.forEach((row,i) => {
-        //    row.forEach((cell,j) => {
-
-        //    });
-        //})
 
         for (var i = 0; i < this.mapSize; i++) {
             for (var j = 0; j < this.mapSize; j++) {
@@ -198,13 +172,5 @@
             }
         }
     }
-
-    //setShip(x, y) {
-    //    console.log(x, y);
-    //    this.mapTokens[x][y] = 1;
-
-    //    this.findBlank();
-    //    this.updateDOMMap();
-    //}
 
 }

@@ -1,13 +1,5 @@
 ﻿let Gameplay = {
 
-    //mapSize = 6,
-    //shipsList = [0, 2, 1, 1], //Index + 1 is the indicator of ship size
-
-    //roomData,
-
-    //playerMap,
-    //oponentMap,
-
     initializeGameplay(roomId) {
 
         this.gameStateDiv = document.querySelector("#gamestate");
@@ -17,6 +9,11 @@
 
         this.roomData = JSON.parse(localStorage.getItem(roomId));
         console.log(this.roomData);
+        if (!this.roomData) {
+            joinRoom(roomId);
+            //this.initializeGameplay(roomId);
+            return;
+        }
 
         this.gameRoomNameDiv.innerText = this.roomData.roomName;
 
@@ -30,6 +27,9 @@
 
         this.oponentMap = new OponentMap("#oponentMap", this.mapSize, this.shipsList,this);
         this.oponentMap.generateMap();
+        this.oponentMap.hideMap();
+
+        this.shipsListDiv = document.querySelector("#shipsList");
 
     },
 
@@ -59,6 +59,23 @@
             }
             else if (data.gameOn) {
                 if (data.askingPlayerTurn) {
+
+                    if (data.lastAction) {
+
+
+                        switch (data.lastAction.result) {
+                            case "hit":
+                                this.playerMap.mapTokens[data.lastAction.x][data.lastAction.y] = -2;
+                                break;
+                            case "miss":
+                                this.playerMap.mapTokens[data.lastAction.x][data.lastAction.y] = -1;
+                                break;
+                            default:
+                        }
+                        this.playerMap.updateDOMMap();
+                    }
+
+
                     this.gameStateDiv.innerText = "Your Turn!";
                     this.oponentMap.enableMove();
                 }
@@ -78,53 +95,21 @@
             console.log(err);
         };
         $.ajax(options);
+    },
+
+
+    updateShipsListDiv(actualShipsLeft) {
+        this.shipsListDiv.innerText = "";
+        actualShipsLeft.forEach((s,i) => {
+            this.shipsListDiv.innerText += s + " x ";
+            for (var j = 0; j < (i + 1); j++) {
+                this.shipsListDiv.innerText += "■";
+            }
+        });
+    },
+
+    hideShipsListDiv() {
+        this.shipsListDiv.style.display = "none";
     }
 
-
 }
-
-
-
-//let mapSize = 6;
-//let shipsList = [0, 2, 1, 1];//Index + 1 is the indicator of ship size
-
-//let oponentCells = new Array(mapSize);
-//let playerCells = new Array(mapSize);
-
-//let playerMap;
-
-//function initializeGameplay() {
-//    playerMap = new PlayerMap("#playerMap", mapSize, shipsList);
-
-//}
-
-
-//function generateMap(parent, allegiance) {
-//    let arrayReference;
-//    if (allegiance == "oponent") arrayReference = oponentCells;
-//    else arrayReference = playerCells;
-    
-//    for (var i = 0; i < mapSize; i++) {
-
-//        let row = document.createElement("div");
-//        row.classList.add('mapRow');
-
-//        arrayReference[i] = new Array(mapSize);
-
-//        for (var j = 0; j < mapSize; j++) {
-//            let cell = document.createElement("div");
-//            cell.classList.add('cell');
-
-//            arrayReference[i][j] = cell;
-
-//            row.appendChild(cell);
-//        }
-
-//        document.querySelector(parent).appendChild(row)
-//    }
-
-//    console.log(oponentCells);
-//    console.log(playerCells);
-
-//}
-
