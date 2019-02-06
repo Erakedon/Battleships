@@ -10,31 +10,57 @@
 }
 
 
-.map .cell {
+.cell {
     width: 40px;
     height: 40px;
     margin: 2px;
-    background-color: rgba(37, 42, 255, 0.4);
+    /*background-color: rgba(37, 42, 255, 0.4);*/
+    background-color: #1767b4;
+    transition: 0.3s linear;
 }
 
-    .map.clickable .cell {
-        cursor: pointer
-    }
+.map .cell.miss {
+    background-color: #0e375f;
+    cursor: default;
+}
 
-    .map .cell.ship {
-        background-color: rgba(255, 0, 0, 0.6);
-        cursor: not-allowed;
-    }
+#playerMap .cell.ship, .shipType .cell {
+    background-color: #58bd00;
+}
 
-    .map .cell.miss {
-        background-color: rgba(0, 0, 0, 0.4);
-        cursor: not-allowed;
-    }
 
-    .map .cell.complete {
-        background-color: rgba(255, 0, 0, 0.2);
-        cursor: not-allowed;
-    }
+#playerMap .cell.complete {
+    background-color: #294f07;
+}
+
+#oponentMap .cell.ship {
+    background-color: #a50000;
+    cursor: default;
+}
+
+
+#oponentMap .cell.complete {
+    background-color: #570a0a;
+    cursor: default;
+}
+
+
+#playerMap.clickable .cell, .cell.ship, .cell.complete {
+    cursor: pointer;
+}
+
+#playerMap.clickable .cell.miss {
+    cursor: not-allowed;
+}
+
+#oponentMap.clickable .cell {
+    cursor: pointer;
+}
+
+
+/*.map.edit .cell.miss {
+    cursor: not-allowed;
+}*/
 
 #gameRoom #gameRoomBody {
     display: flex;
@@ -43,4 +69,28 @@
     justify-content: center;
     height: 80vh;
     width: 90vw;
+}
+
+#shipsList {
+    display: flex;
+    flex-flow: column nowrap;
+
+    align-items: flex-start;
+    justify-content: center;
+    width: 200px;
+}
+
+#shipsList .shipType {
+    display: flex;
+    flex-flow: row nowrap;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #c7e2fb;
+}
+
+.shipType span {
+    margin-right: 5px;
+    margin-left: 5px;
 }

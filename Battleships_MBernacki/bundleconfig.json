@@ -5,7 +5,11 @@
             "wwwroot/css/site.css",
             "wwwroot/css/lobby.css",
             "wwwroot/css/gameplay.css"
-        ]
+        ],
+        "minify": {
+            "enabled": false,
+            "renameLocals": false
+        }
     },
   {
     "outputFileName": "wwwroot/js/site.min.js",

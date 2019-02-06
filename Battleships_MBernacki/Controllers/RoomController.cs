@@ -54,7 +54,7 @@ namespace Battleships_MBernacki.Controllers
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (roomCreation.ShipsList[i] < 0 || roomCreation.ShipsList[i] > 4)
+                    if (roomCreation.ShipsList[i] < 0 || roomCreation.ShipsList[i] >= (6 - i))
                         flag = false;
                 }
             }

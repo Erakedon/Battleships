@@ -21,13 +21,43 @@ function togglePopUp(popUpId) {
     else popUpEl.style.display = "none"
 }
 
+function toggleOptions(elementId,optionsBtnId) {
+    let el = document.querySelector(elementId);
+    let optionsBtn = document.querySelector(optionsBtnId);
+
+    if (el.style.display == "flex") {
+        el.style.display = "none";
+        optionsBtn.innerText = "Show options";
+    }
+    else {
+        el.style.display = "flex";
+        optionsBtn.innerText = "Hide options";
+    }
+
+}
+
 function createNewRoom(roomname) {
+
+    let mapSize = document.querySelector("#mapSizeInput").value || 6;
+
+    let shipsMapInputs = document.querySelector("#shipListInputContainer").querySelectorAll("input");
+
+    console.log(shipsMapInputs);
+    let shipsList = [];
+    if (shipsMapInputs.length == 4) {
+        for (var i = 0; i < 4; i++) {
+            shipsList[i] = shipsMapInputs[i].value;
+            console.log(shipsMapInputs[i].value);
+        }
+    } else
+        shipsList = [0, 2, 1, 1];
+    
 
     let roomCreationData =
     {
         roomName: roomname,
-        mapSize: 7,
-        shipsList: [4,1,1,1]
+        mapSize: mapSize,
+        shipsList: shipsList
 
     }
     

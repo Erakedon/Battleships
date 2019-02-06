@@ -29,7 +29,7 @@ namespace Battleships_MBernacki.UnitTests
             _mapSize = 3;
             _shipsList = new short[] { 2, 1, 0, 0 };
 
-            _gameRoom = new GameRoom(123456, "Example Name", "", _mapSize, _shipsList );
+            _gameRoom = new GameRoom(123456, "Example Name", _mapSize, _shipsList );
             
             _properMap1 = new short[][] { new short[]{ 0, 1, 1 },
                                           new short[]{ 0, 0, 0 },

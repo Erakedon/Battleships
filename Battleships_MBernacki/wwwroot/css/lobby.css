@@ -27,6 +27,8 @@
 
     height: 80vh;
     width: 90vw;
+
+    overflow-y: auto;
 }
 
 #lobby .roomInfo {
@@ -34,18 +36,19 @@
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-around;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.3);
-    width: 400px;
+    border: 2px solid #c7e2fb;
+    border-radius: 50px;
+    color: #ddd;
+    width: 300px;
     max-width: 90vw;
-    height: 80px;
+    height: 70px;
     margin: 5px;
-    padding: 10px;
+    /*padding: 5px;*/
     cursor: pointer;
 }
 
 #lobby .roomInfo:hover {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(89, 207, 234, 0.1);
 }
 
 /*#lobby #roomList
@@ -77,4 +80,45 @@
 #roomInfo i
 {
     flex-grow: 1;
+}
+
+#RoomCreatePopUp {
+    display: flex;
+    flex-flow: column nowrap;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#shipListInputContainer {
+    display: flex;
+    flex-flow: row nowrap;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#roomCreateOptions input {
+    width: 30px;
+}
+
+#buttonHolder {
+    display: flex;
+    flex-flow: row nowrap;
+
+    align-items: center;
+    justify-content: space-around;
+}
+
+#roomCreateOptions {
+    display: flex;
+    flex-flow: column nowrap;
+
+    align-items: center;
+    justify-content: center;
+
+    /*padding: 10px;*/
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
 }

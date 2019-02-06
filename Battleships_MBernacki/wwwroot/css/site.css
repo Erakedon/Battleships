@@ -1,7 +1,14 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+
+
 body {
-    background-color: #588dbf;
+    background-color: #5d89b2;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
 }
 
 /* Wrapping element */
@@ -21,6 +28,7 @@ body {
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+    padding: 50px;
 }
 
 .warningLabel {
@@ -46,6 +54,8 @@ body {
     padding: 10px;
 
     background-color: #386d9f;
+
+    border-radius: 20px;
 }
 
 .buttonHolder {
@@ -53,4 +63,90 @@ body {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-around;
+}
+
+button {
+    font-size: 0.9em;
+    border: 3px solid #c7e2fb;
+    padding: 6px;
+    margin: 3px;
+    border-radius: 15px;
+    color: #c7e2fb;
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 3px solid #fff;
+
+}
+
+button.main {
+    background-color: rgba(235, 243, 251, 0.2);
+}
+
+button.locked {
+    cursor: not-allowed;
+}
+
+button:focus {
+    outline: none;
+    border-color: #fff;
+    color: #fff;
+}
+
+input {
+    border: 3px solid #c7e2fb;
+    background-color: #9cc4ea !important;
+    color: #fff !important;
+    padding: 6px;
+    margin: 3px;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+label {
+    color: #c7e2fb;
+    transition: 1s;
+}
+
+label.warning {
+    text-decoration: none;
+    color: #ee5353;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #ddd;
+    padding: 5px;
+}
+
+a:hover {
+    color: #fff;
+}
+
+a:focus {
+    outline: none;
+}
+
+h1, h2, h3, h4 {
+    color: #eee;
+    margin: 10px;
+}
+
+#index form{
+    display: flex;
+    flex-flow: column nowrap;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#index .playButton {
+    font-size: 1.6em;
 }

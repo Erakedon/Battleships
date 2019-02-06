@@ -5,7 +5,7 @@
 }
 
 <h2 id="roomName">GameRoom</h2>
-<h3 id="oponentName">Playing versus</h3>
+<h3 id="oponentName">Waiting for other player</h3>
 
 <script>
     //let tmp = Url.RouteUrl(ViewContext.RouteData.Values);
@@ -21,7 +21,7 @@
 
 <div id="gameRoom" class="flexContainer">
     <div id="gameRoomHeader">
- 
+
         <h2 id="gamestate">Gamestate</h2>
 
     </div>
@@ -29,7 +29,12 @@
 
 
         <div id="oponentField" class="gamefield">
-            <div id="shipsList"></div>
+            <div id="shipsList">
+                <div class="shipType"><p>?</p> <span>x</span> <div class="cell"></div></div>
+                <div class="shipType"><p>?</p> <span>x</span> <div class="cell"></div><div class="cell"></div></div>
+                <div class="shipType"><p>?</p> <span>x</span> <div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="shipType"><p>?</p> <span>x</span> <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+            </div>
             <div id="oponentMap" class="map"></div>
         </div>
 
@@ -39,5 +44,6 @@
 
 
     </div>
+    <a class="main playButton" asp-area="" asp-controller="Home" asp-action="Lobby"><button id="backToLobby" style="display: none">Back to Lobby</button></a>
 
 </div>

@@ -1,8 +1,8 @@
 ﻿class PlayerMap extends ShipsMap {
 
-
     constructor(containerId, _mapSize, shipsList, gameplayRef) {
         super(containerId, _mapSize, shipsList);
+        this.shipsList = shipsList;
         this.gameplay = gameplayRef;
     }
 
@@ -31,12 +31,59 @@
         this.findBlank();
         this.updateDOMMap();
         this.gameplay.updateShipsListDiv(this.shipsLeft);
+        this.mapDOMRef[x][y].onclick = () => { this.removeShip(x, y) };
         if (this.allShipsPlaced()) {
             console.log("All ships placed!");
+            document.querySelector(this.containerId).classList.remove("clickable");
+            document.querySelector(this.gameplay.oponentMap.containerId).classList.add("clickable");
             this.setMapForGameplay();
             this.gameplay.hideShipsListDiv();
             this.gameplay.oponentMap.showMap();
             this.sendMap();
+        }
+    }
+
+    removeShip(x, y) {
+        console.log("rmvShp",x, y);
+        this.mapTokens[x][y] = 0;
+
+        this.removeMiss();
+        this.renewCompleted();
+        this.shipsLeft = this.shipsList.slice();
+
+
+        this.findBlank();
+        this.updateDOMMap();
+        this.gameplay.updateShipsListDiv(this.shipsLeft);
+        this.mapDOMRef[x][y].onclick = () => { this.setShip(x, y) };
+        this.makeBlankClickable();
+    }
+
+    removeMiss() {
+        for (var i = 0; i < this.mapSize; i++) {
+            for (var j = 0; j < this.mapSize; j++) {
+                if (this.mapTokens[i][j] == -1) {
+                    this.mapTokens[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    makeBlankClickable() {
+        for (let i = 0; i < this.mapSize; i++) {
+            for (let j = 0; j < this.mapSize; j++) {
+                if (this.mapTokens[i][j] == 0) {
+                    this.mapDOMRef[i][j].onclick = () => { this.setShip(i, j) };
+                }
+            }
+        }
+    }
+
+    renewCompleted() {
+        for (var i = 0; i < this.mapSize; i++) {
+            for (var j = 0; j < this.mapSize; j++) {
+                if (this.mapTokens[i][j] == -2) this.mapTokens[i][j] = 1;
+            }
         }
     }
 

@@ -13,21 +13,17 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-
-    <a asp-area="" asp-controller="Home" asp-action="Lobby">Home</a>
-
-    <div class="index flexContainer">
-        <button></button>
-        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post">
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
-        </form>
+    <div id="index" class="flexContainer">
+        <a class="main playButton" asp-area="" asp-controller="Home" asp-action="Lobby">Play</a>
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <button type="submit">Logout</button>
+            </form>
     </div>
 }
 else
 {
-    <div class="index flexContainer">
-
+    <div id="index" class="flexContainer">
         <a asp-area="Identity" asp-page="/Account/Register">Register</a>
         <a asp-area="Identity" asp-page="/Account/Login">Login</a>
     </div>

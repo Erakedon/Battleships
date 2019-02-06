@@ -30,6 +30,7 @@
         this.oponentMap.hideMap();
 
         this.shipsListDiv = document.querySelector("#shipsList");
+        this.updateShipsListDiv(this.roomData.shipsList);
 
     },
 
@@ -56,6 +57,7 @@
             console.log(data);
             if (data.lastAction && data.lastAction.result == "win") {
                 this.gameStateDiv.innerText = data.lastAction.playerName + " have won!";
+                document.querySelector("#backToLobby").style.display = "block";
             }
             else if (data.gameOn) {
                 if (data.askingPlayerTurn) {
@@ -98,13 +100,23 @@
     },
 
 
+    //updateShipsListDiv(actualShipsLeft) {
+    //    this.shipsListDiv.innerText = "";
+    //    actualShipsLeft.forEach((s, i) => {
+    //        this.shipsListDiv.innerText += s + " x ";
+    //        for (var j = 0; j < (i + 1); j++) {
+    //            this.shipsListDiv.innerText += "■";
+    //        }
+    //    });
+    //},
+
     updateShipsListDiv(actualShipsLeft) {
-        this.shipsListDiv.innerText = "";
-        actualShipsLeft.forEach((s,i) => {
-            this.shipsListDiv.innerText += s + " x ";
-            for (var j = 0; j < (i + 1); j++) {
-                this.shipsListDiv.innerText += "■";
-            }
+        //this.shipsListDiv.innerText = "";
+        let shipTypeDiv = this.shipsListDiv.querySelectorAll(".shipType");
+        actualShipsLeft.forEach((s, i) => {
+            if (s == 0) shipTypeDiv[i].style.display = "none";
+            else shipTypeDiv[i].style.display = "flex";
+            shipTypeDiv[i].querySelector("p").innerText = s;
         });
     },
 

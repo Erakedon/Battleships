@@ -154,18 +154,23 @@
 
         for (var i = 0; i < this.mapSize; i++) {
             for (var j = 0; j < this.mapSize; j++) {
+                this.mapDOMRef[i][j].classList.remove("ship", "miss", "complete");
                 switch (this.mapTokens[i][j]) {
                     case -2:
-                        this.mapDOMRef[i][j].classList.remove("ship");
+                        //this.mapDOMRef[i][j].classList.remove("ship");
                         this.mapDOMRef[i][j].classList.add("complete");
-                        this.mapDOMRef[i][j].onclick = () => { return false };
+                        //this.mapDOMRef[i][j].onclick = () => { return false };
                         break;
                     case -1:
                         this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("miss");
                         break;
+                    case 0:
+                        //this.mapDOMRef[i][j].onclick = () => { return false };
+                        //this.mapDOMRef[i][j].classList.remove("ship", "miss", "complete");
+                        break;
                     case 1:
-                        this.mapDOMRef[i][j].onclick = () => { return false };
+                        //this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("ship");
                         break;
                 }

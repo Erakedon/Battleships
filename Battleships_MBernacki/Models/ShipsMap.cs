@@ -43,7 +43,9 @@ namespace Battleships_MBernacki.Models
 
             ShipPartsLeft = new List<int[]>();
 
-            ShipsToFound = ShipList;
+            //ShipsToFound = ShipList;
+            ShipsToFound = new short[4];
+            ShipList.CopyTo(ShipsToFound, 0);
 
 
             for (int i = 0; i < MapSize; i++)
@@ -64,10 +66,12 @@ namespace Battleships_MBernacki.Models
                         int syPos = FindInDirection(i, j + 1, 0, 1);
 
                         if (sxNeg + sxPos + syNeg + syPos > ShipsToFound.Length - 1) return false;
-                        
+
+                        ShipsToFound[sxNeg + sxPos + syNeg + syPos] -= 1;
+
                         if (sxNeg + sxPos > 0)
                         {
-                            ShipsToFound[sxNeg + sxPos] -= 1;
+                            //ShipsToFound[sxNeg + sxPos] -= 1;
                             int x = i + sxPos;
                             while (x >= i - sxNeg)
                             {
@@ -76,11 +80,11 @@ namespace Battleships_MBernacki.Models
                                 ShipPartsLeft.Add(new int[] { x, j });
                                 x--;
                             }
-                            break;
+                            //break;
                         }
                         else if (syNeg + syPos > 0)
                         {
-                            ShipsToFound[syNeg + syPos] -= 1;
+                            //ShipsToFound[syNeg + syPos] -= 1;
                             int y = j + syPos;
                             while (y >= j - syNeg)
                             {
@@ -89,14 +93,18 @@ namespace Battleships_MBernacki.Models
                                 ShipPartsLeft.Add(new int[] { i, y });
                                 y--;
                             }
-                            break;
-                        } else ShipPartsLeft.Add(new int[] { i, j });
+                            //break;
+                        } else
+                        {
+                            if (!CheckSlants(i, j)) return false;
+                            ShipPartsLeft.Add(new int[] { i, j });
+                        }
                     }
                 }
             }
 
-            //for (int i = 0; i < ShipsToFound.Length; i++)
-            //    if (ShipsToFound[i] > 0) return false;
+            for (int i = 0; i < ShipsToFound.Length; i++)
+                if (ShipsToFound[i] != 0) return false;
 
 
             return true;
@@ -137,13 +145,13 @@ namespace Battleships_MBernacki.Models
         {
             if (x < 0 || x + 1 > MapSize || y < 0 || y + 1 > MapSize) return 0;
 
+            SearchedCells[x][y] = true;
             if (Map[x][y] == 1)
             {
-                SearchedCells[x][y] = true;
+                //SearchedCells[x][y] = true;
 
                 return 1 + FindInDirection(x + dirX, y + dirY, dirX, dirY);
             }
-            SearchedCells[x][y] = true;
             return 0;
 
 
