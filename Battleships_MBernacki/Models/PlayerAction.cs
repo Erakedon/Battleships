@@ -14,8 +14,5 @@ namespace Battleships_MBernacki.Models
 
         public string Result { get; set; }
         public bool GameWinner { get; set; }
-
-
-
     }
 }

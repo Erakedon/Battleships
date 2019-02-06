@@ -22,15 +22,12 @@ namespace Battleships_MBernacki.Controllers
             return View();
         }
 
-        //[FromRoute("/roomId")]
         [Authorize]
         public IActionResult GameRoom(int id)
         {
             ViewData["RoomId"] = id;
             return View();
-        }
-        
-
+        }      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

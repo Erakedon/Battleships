@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using Battleships_MBernacki.Models.Interfaces;
 using System.Threading.Tasks;
 using System.Timers;
-//using System.Threading;
 
 namespace Battleships_MBernacki.Models
 {
@@ -27,7 +26,6 @@ namespace Battleships_MBernacki.Models
             do
             {
                 sameId = false;
-                //newId = RngCsp.GetHashCode();
                 Random random = new System.Random();
                 newId = random.GetHashCode();
 
@@ -47,10 +45,6 @@ namespace Battleships_MBernacki.Models
                 if (GameRoomsList[i].DeleteTime > DateTime.MinValue && GameRoomsList[i].DeleteTime < DateTime.Now)
                     GameRoomsList.RemoveAt(i);
             }
-        }
-        
-        
-
-
+        }       
     }
 }

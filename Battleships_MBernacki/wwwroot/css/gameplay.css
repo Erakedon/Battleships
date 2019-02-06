@@ -14,7 +14,6 @@
     width: 40px;
     height: 40px;
     margin: 2px;
-    /*background-color: rgba(37, 42, 255, 0.4);*/
     background-color: #1767b4;
     transition: 0.3s linear;
 }
@@ -56,11 +55,6 @@
 #oponentMap.clickable .cell {
     cursor: pointer;
 }
-
-
-/*.map.edit .cell.miss {
-    cursor: not-allowed;
-}*/
 
 #gameRoom #gameRoomBody {
     display: flex;

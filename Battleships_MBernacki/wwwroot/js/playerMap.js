@@ -102,10 +102,8 @@
                     this.mapTokens[i][j] = 0;
                 }
             }
-        }                          
-
+        }                       
     }
-
 
     sendMap() {
 
@@ -132,8 +130,5 @@
             window.location.href = ('/home/lobby/' + roomData.roomID);
         };
         $.ajax(options);
-
     }
-
-
 }

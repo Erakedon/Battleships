@@ -7,7 +7,7 @@
             "wwwroot/css/gameplay.css"
         ],
         "minify": {
-            "enabled": false,
+            "enabled": true,
             "renameLocals": false
         }
     },

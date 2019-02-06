@@ -18,7 +18,7 @@
         this.gameRoomNameDiv.innerText = this.roomData.roomName;
 
         this.mapSize = this.roomData.mapSize,
-            this.shipsList = this.roomData.shipsList, //Index + 1 is the indicator of ship size
+        this.shipsList = this.roomData.shipsList, //Index + 1 is the indicator of ship size
 
         this.playerMap = new PlayerMap("#playerMap", this.mapSize, this.shipsList,this);
         this.playerMap.generateMap();
@@ -99,19 +99,7 @@
         $.ajax(options);
     },
 
-
-    //updateShipsListDiv(actualShipsLeft) {
-    //    this.shipsListDiv.innerText = "";
-    //    actualShipsLeft.forEach((s, i) => {
-    //        this.shipsListDiv.innerText += s + " x ";
-    //        for (var j = 0; j < (i + 1); j++) {
-    //            this.shipsListDiv.innerText += "■";
-    //        }
-    //    });
-    //},
-
     updateShipsListDiv(actualShipsLeft) {
-        //this.shipsListDiv.innerText = "";
         let shipTypeDiv = this.shipsListDiv.querySelectorAll(".shipType");
         actualShipsLeft.forEach((s, i) => {
             if (s == 0) shipTypeDiv[i].style.display = "none";

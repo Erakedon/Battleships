@@ -10,8 +10,7 @@ function submitCreateRoom() {
     }
     else {
         createNewRoom(nameInput.value);
-    }
-    
+    }    
 }
 
 function togglePopUp(popUpId) {

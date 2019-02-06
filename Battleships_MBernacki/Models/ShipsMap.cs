@@ -71,29 +71,23 @@ namespace Battleships_MBernacki.Models
 
                         if (sxNeg + sxPos > 0)
                         {
-                            //ShipsToFound[sxNeg + sxPos] -= 1;
                             int x = i + sxPos;
                             while (x >= i - sxNeg)
                             {
                                 if (!CheckSlants(x, j)) return false;
-                                //ShipsLeft[sxNeg + sxPos].Add(new int[2] { x, j });
                                 ShipPartsLeft.Add(new int[] { x, j });
                                 x--;
                             }
-                            //break;
                         }
                         else if (syNeg + syPos > 0)
                         {
-                            //ShipsToFound[syNeg + syPos] -= 1;
                             int y = j + syPos;
                             while (y >= j - syNeg)
                             {
                                 if (!CheckSlants(i, y)) return false;
-                                //ShipsLeft[sxNeg + sxPos].Add(new int[2] { i, y });
                                 ShipPartsLeft.Add(new int[] { i, y });
                                 y--;
                             }
-                            //break;
                         } else
                         {
                             if (!CheckSlants(i, j)) return false;
@@ -148,8 +142,6 @@ namespace Battleships_MBernacki.Models
             SearchedCells[x][y] = true;
             if (Map[x][y] == 1)
             {
-                //SearchedCells[x][y] = true;
-
                 return 1 + FindInDirection(x + dirX, y + dirY, dirX, dirY);
             }
             return 0;
@@ -179,10 +171,5 @@ namespace Battleships_MBernacki.Models
             if (hit) return "hit";
             return "miss";
         }
-
-
-
-
-
     }
 }

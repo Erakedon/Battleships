@@ -69,8 +69,6 @@ namespace Battleships_MBernacki.Controllers
 
             int playerRoomKey = newGameRoom.AddPlayer(user.UserName, user.Id);
 
-            //RoomList.Add(new GameRoom(RoomList.Count(), roomCreation.RoomName, password));
-            //var newGameRoom = RoomList.Last<GameRoom>();
             _gameRooms.GameRoomsList.Add(newGameRoom);
 
 
@@ -95,11 +93,8 @@ namespace Battleships_MBernacki.Controllers
 
             if (gameRoom == null) return NotFound("Game room could not be found");
             if (gameRoom.IsRoomFull()) return NotFound("Game room is full");
-            //if (gameRoom.RequirePassword  && gameRoom.CheckPassword(roomJoin.RoomPassword)) return BadRequest("Password is incorect");
-            //int playerRoomKey;
 
             Battleships_MBernackiUser user = await GetCurrentUserAsync();
-
 
             int playerRoomKey = gameRoom.AddPlayer(user.UserName, user.Id);
 
@@ -116,7 +111,6 @@ namespace Battleships_MBernacki.Controllers
         [HttpGet]
         [Route("[action]")]
         [Produces("application/json")]
-        //[Authorize]
         public IActionResult GetRoomList()
         {
             List<RoomInfo> avalibleRooms = new List<RoomInfo>();
@@ -150,12 +144,9 @@ namespace Battleships_MBernacki.Controllers
             var playerRoomId = gameRoom.GetPlayerRoomId(mapInfo.PlayerKey);
             if (playerRoomId != 0 && playerRoomId != 1) return BadRequest("Wrong Player Key");
             if(gameRoom.GameOn) return BadRequest("Map is already set");
-            //var shipsMap = new ShipsMap(mapInfo.Map,gameRoom.MapSize,gameRoom.ShipList);
             bool isMapOk = gameRoom.AddMap(mapInfo.PlayerKey, mapInfo.Map);
             if(!isMapOk) return BadRequest("Map is not correct");
 
-
-            //gameRoom.Maps[playerRoomId] = new ShipsMap(mapInfo.Map);
             string oponentName = "";
             if (gameRoom.IsRoomFull()) oponentName = gameRoom.PlayersNames[(playerRoomId + 1) % 2];
 
@@ -214,11 +205,6 @@ namespace Battleships_MBernacki.Controllers
             if(!gameRoom.GameOn) return BadRequest("Players did not sets theirs maps yet");
 
             string result = gameRoom.PlayerShootReq(shootInfo.PlayerKey, shootInfo.X, shootInfo.Y);
-
-            //if (result == "hit")
-            //{
-            //    _gameRooms.ResolveRoom(gameRoom.RoomID);
-            //}
 
             return Ok(new RoomstateInfo()
             {

@@ -18,9 +18,7 @@
                 this.mapTokens[i][j] = 0;
             }
         }
-
     }
-
 
     generateMap(container) {
         console.log(this.containerId);
@@ -40,7 +38,6 @@
 
                 row.appendChild(cell);
             }
-
             document.querySelector(this.containerId).appendChild(row)
         }
     }
@@ -90,9 +87,8 @@
                         }
                         if (x + 1 > 0) this.mapTokens[x][j] = -1;
                         startOver = true;
-                        //break;
                     }
-                    if (syNeg + syPos == biggestShip - 1) {//
+                    if (syNeg + syPos == biggestShip - 1) {
                         if (!startOver) this.shipsLeft[biggestShip - 1] -= 1;
                         let y = j + syPos;
                         if (y + 1 < this.mapSize) this.mapTokens[i][y + 1] = -1;
@@ -102,7 +98,6 @@
                         }
                         if (y + 1 > 0) this.mapTokens[i][y] = -1;
                         startOver = true;
-                        //break;
                     }
                     if (startOver) break;
                 }
@@ -157,20 +152,13 @@
                 this.mapDOMRef[i][j].classList.remove("ship", "miss", "complete");
                 switch (this.mapTokens[i][j]) {
                     case -2:
-                        //this.mapDOMRef[i][j].classList.remove("ship");
                         this.mapDOMRef[i][j].classList.add("complete");
-                        //this.mapDOMRef[i][j].onclick = () => { return false };
                         break;
                     case -1:
                         this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("miss");
                         break;
-                    case 0:
-                        //this.mapDOMRef[i][j].onclick = () => { return false };
-                        //this.mapDOMRef[i][j].classList.remove("ship", "miss", "complete");
-                        break;
                     case 1:
-                        //this.mapDOMRef[i][j].onclick = () => { return false };
                         this.mapDOMRef[i][j].classList.add("ship");
                         break;
                 }

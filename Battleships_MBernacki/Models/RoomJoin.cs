@@ -10,6 +10,5 @@ namespace Battleships_MBernacki.Models
     {
         [Required]
         public int RoomId { get; set; }
-        //public string RoomPassword { get; set; }
     }
 }

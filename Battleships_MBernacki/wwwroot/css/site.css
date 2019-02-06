@@ -1,9 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
-
-
+﻿
 body {
     background-color: #5d89b2;
     font-size: 18px;
@@ -11,8 +6,6 @@ body {
     margin: 0px;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
 .body-content {
     position: relative;
     display: flex;
@@ -33,14 +26,6 @@ body {
 
 .warningLabel {
     color: red;
-}
-
-
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-
 }
 
 .popUp {
@@ -139,14 +124,31 @@ h1, h2, h3, h4 {
     margin: 10px;
 }
 
-#index form{
+indexHeader {
+    font-size: 1.4em;
+}
+
+#index form {
     display: flex;
     flex-flow: column nowrap;
-
     justify-content: center;
     align-items: center;
 }
 
 #index .playButton {
     font-size: 1.6em;
+}
+
+#index label {
+    font-size: 1.1em;
+}
+
+
+button, label, div, span, a {
+    animation: appeare 0.3s ease;
+}
+
+@keyframes appeare {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }

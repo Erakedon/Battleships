@@ -1,7 +1,4 @@
-﻿@*@model _Views_Home_Lobby*@
-@*@model Battleships_MBernacki.Views.Home.Lobby*@
-
-@{
+﻿@{
     ViewData["Title"] = "Lobby";
 }
 
@@ -30,13 +27,6 @@
         <button id="CreateRoomSubmit" class="main" onclick="submitCreateRoom()">Create</button>
         <button onclick="togglePopUp('#RoomCreatePopUp')">Cancel</button>
     </div>
-
-
-
-
-
-
-
 </div>
 
 <div id="RoomPasswordPopUp" class="popUp" style="display:none;">
@@ -50,7 +40,6 @@
 </div>
 
 <script>
-    //checkIfNicknameSet();
     $(document).ready(() => {
         updateRoomList("#roomList");
     });
@@ -73,54 +62,3 @@
     <a class="main playButton" asp-area="" asp-controller="Home" asp-action="Index"><button>Back</button></a>
 
 </div>
-
-
-@*//*@
-
-@*@model IEnumerable<Battleships_MBernacki.Models.RoomInfo>
-
-    @{
-        ViewData["Title"] = "Lobby";
-    }
-
-    <h2>Lobby</h2>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.RoomName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OwnerName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RequirePassword)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OwnerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RequirePassword)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@

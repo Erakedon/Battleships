@@ -17,8 +17,6 @@ namespace Battleships_MBernacki.Models
         private ShipsMap[] Maps { get; set; }
         public short MapSize { get; }
         public short[] ShipList { get; }
-        //private string Password { get; set; }
-        //public bool RequirePassword { get; }
 
         public int CurrentPlayerTurn { get; set; }// 0-first player turn | 1-second player turn
         public PlayerAction LastAction { get; set; }
@@ -32,9 +30,6 @@ namespace Battleships_MBernacki.Models
             RoomName = roomName;
             MapSize = mapsize;
             ShipList = shipList;
-            //Password = password;
-            //if (password == "") RequirePassword = false;
-            //else RequirePassword = true;
 
             CurrentPlayerTurn = 0;
 
@@ -61,33 +56,12 @@ namespace Battleships_MBernacki.Models
             return playerSecretKey;
         }
 
-        //public bool SetPassword(string oldPassword, string newPassword)
-        //{
-        //    if (Password == "" || Password == oldPassword) Password = newPassword;
-        //    else return false;
-
-        //    return true;
-        //}
-
-        //public bool CheckPassword(string password)
-        //{
-        //    if (Password == password) return true;
-        //    else return false;
-        //}
-
         public int GetPlayerRoomId(int playerkey)
         {
             int id = -1;
             id = RoomPlayersKeys.FindIndex(k => k == playerkey);
             return id;
         }
-
-        //public bool MapsReady()
-        //{
-        //    if (Maps.Count() == 2) return true;
-
-        //    return false;
-        //}
 
         public bool IsRoomFull()
         {
@@ -104,10 +78,6 @@ namespace Battleships_MBernacki.Models
 
             ShipsMap shipsMap = new ShipsMap(map, MapSize, ShipList);
             if (!shipsMap.ValidateMap()) return false;
-
-            //Maps.Insert(playerId, shipsMap);
-
-            //if (Maps.Count == 2) GameOn = true;
 
             Maps[playerId] = shipsMap;
 

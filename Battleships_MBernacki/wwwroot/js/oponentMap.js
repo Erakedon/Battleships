@@ -1,6 +1,5 @@
 ﻿class OponentMap extends ShipsMap {
 
-
     constructor(containerId, _mapSize, shipsList, gameplayRef) {
         super(containerId, _mapSize, shipsList);
         this.gameplay = gameplayRef;
@@ -61,9 +60,7 @@
     setMapForGameplay() {
         for (let i = 0; i < this.mapSize; i++) {
             for (let j = 0; j < this.mapSize; j++) {
-
-                this.mapDOMRef[i][j].onclick = () => { this.shoot(i, j) };
-              
+                this.mapDOMRef[i][j].onclick = () => { this.shoot(i, j) };              
             }
         }
     }

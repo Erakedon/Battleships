@@ -12,6 +12,5 @@ namespace Battleships_MBernacki.Models
         public string RoomName { get; set; }
         public short MapSize { get; set; }
         public short[] ShipsList { get; set; }
-        //public string Password { get; set; }
     }
 }
